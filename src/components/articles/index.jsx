@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ArticleCard from "./article-card";
-import { getNews } from "../store/actions/getNews.action";
+import ArticleCard from "../article-card";
+import { getNews } from "../../store/actions/getNews.action";
 
 const guardianApiKey = process.env.REACT_APP_GUARDIAN_API_KEY;
-const ArticleList = ({ articles }) => {
+const Articles = ({ articles }) => {
   const dispatch = useDispatch();
   // const { news } = useSelector((state) => state.getNews);
 
@@ -28,7 +28,7 @@ const ArticleList = ({ articles }) => {
     fetchNews("latest");
   }, []);
   return (
-    <div className="w-full lg:w-2/3 m-auto flex items-center gap-4 flex-wrap">
+    <div className="w-11/12 lg:w-2/3 m-auto flex items-center gap-4 flex-wrap">
       <ArticleCard article={article} />
       {article?.map((article) => (
         <ArticleCard article={article} key={article.id} />
@@ -50,4 +50,4 @@ const ArticleList = ({ articles }) => {
   );
 };
 
-export default ArticleList;
+export default Articles;

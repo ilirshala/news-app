@@ -1,9 +1,10 @@
 import React from "react";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const ArticleCard = ({ article }) => {
   return (
-    <div className="p-3 border-gray-400 rounded-lg shadow-sm transition-transform duration-300 hover:shadow-lg hover:scale-105 flex flex-col h-72 w-full sm:w-56 md:w-64 lg:w-72 xl:w-72 cursor-pointer">
-      <p className="text-xs font-bold text-gray-500 mb-3">
+    <div className="p-3 border-gray-400 rounded-lg shadow-sm transition-transform duration-300 hover:shadow-lg hover:scale-105 flex flex-col h-72 w-full sm:w-56 md:w-64 lg:w-72 xl:w-72 cursor-pointer mt-5 lg:mt-0">
+      <p className="text-xs font-bold text-white mb-3 px-2 py-1 rounded-full bg-red-700 w-fit">
         {article?.sectionName}
       </p>
       <h2 className="text-md font-bold">{article.title || article.webTitle}</h2>
@@ -11,7 +12,8 @@ const ArticleCard = ({ article }) => {
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste explicabo
         dolorum sunt quasi nobis numquam dolores. Unde hic ducimus quasi.
       </p>
-      <h3 className="mt-auto cursor-pointer text-xs font-bold text-gray-500">
+      <h3 className="mt-auto cursor-pointer text-xs font-bold text-gray-500 flex items-center gap-3">
+        <FaArrowRightLong size={15} className="text-gray-500" />
         Read more
       </h3>
     </div>
