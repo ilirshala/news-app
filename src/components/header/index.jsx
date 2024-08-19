@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FiSettings } from "react-icons/fi"; // Importing settings icon from react-icons
 
-const Header = () => {
+const Header = ({ searchValue, handleFilterSearch }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -39,6 +39,8 @@ const Header = () => {
           className={`p-2 w-64 border rounded-md focus:outline-none focus:ring focus:border-blue-300 bg-transparent ${
             isScrolled ? "text-black" : "text-white"
           }`}
+          value={searchValue}
+          onChange={handleFilterSearch}
         />
         <FiSettings
           className={`text-2xl cursor-pointer ${
