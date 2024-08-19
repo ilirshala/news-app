@@ -3,7 +3,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 
 const ArticleCard = ({ article }) => {
   return (
-    <div className="p-3 border-gray-400 rounded-lg shadow-sm transition-transform duration-300 hover:shadow-lg hover:scale-105 flex flex-col h-72 w-full sm:w-56 md:w-64 lg:w-72 xl:w-72 cursor-pointer mt-5 lg:mt-0">
+    <div className="p-3 border border-gray-300 rounded-lg shadow-sm transition-transform duration-300 hover:shadow-lg hover:scale-105 flex flex-col h-72 w-full sm:w-56 md:w-56 lg:w-72 xl:w-72 cursor-pointer mt-5 lg:mt-0">
       <p className="text-xs font-bold text-white mb-3 px-2 py-1 rounded-full bg-red-700 w-fit">
         {article?.sectionName}
       </p>
