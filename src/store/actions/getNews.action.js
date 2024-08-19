@@ -13,12 +13,12 @@ export const getNews = (query) => {
     dispatch({ type: GET_NEWS });
     axios
       .all([
-        axios.get(
-          `https://newsapi.org/v2/everything?q=${query}&apiKey=${newsOrgApiKey}`
-        ),
-        axios.get(
-          `https://content.guardianapis.com/search?q=${query}&api-key=${guardianApiKey}`
-        ),
+        // axios.get(
+        //   `https://newsapi.org/v2/everything?q=${query}&apiKey=${newsOrgApiKey}`
+        // ),
+        // axios.get(
+        //   `https://content.guardianapis.com/search?q=${query}&api-key=${guardianApiKey}`
+        // ),
       ])
       .then(
         axios.spread((newsApiResponse, guardianResponse) => {
