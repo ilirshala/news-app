@@ -10,7 +10,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getNews("latest"));
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="w-full">
