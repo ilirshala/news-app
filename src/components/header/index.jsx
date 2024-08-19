@@ -1,23 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { FiSettings } from "react-icons/fi"; // Importing settings icon from react-icons
+import React from "react";
+import { FiSettings } from "react-icons/fi";
+import { useDispatch } from "react-redux";
+import { filterArticles } from "../../store/actions/getNews.action";
+import { useScrollHook } from "../../hooks/useScrollHook";
 
-const Header = ({ searchValue, handleFilterSearch }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
+const Header = () => {
+  const dispatch = useDispatch();
+  const { isScrolled } = useScrollHook();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const handleFilterSearch = (e) => {
+    const searchTerm = e.target.value;
+    dispatch(filterArticles(searchTerm));
+  };
 
   return (
     <header
@@ -39,7 +33,6 @@ const Header = ({ searchValue, handleFilterSearch }) => {
           className={`p-2 w-64 border rounded-md focus:outline-none focus:ring focus:border-blue-300 bg-transparent ${
             isScrolled ? "text-black" : "text-white"
           }`}
-          value={searchValue}
           onChange={handleFilterSearch}
         />
         <FiSettings

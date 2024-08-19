@@ -4,6 +4,8 @@ export const GET_NEWS = "GET_NEWS";
 export const GET_NEWS_SUCCESS = "GET_NEWS_SUCCESS";
 export const GET_NEWS_FAILURE = "GET_NEWS_FAILURE";
 
+export const FILTER_ARTICLES = "FILTER_ARTICLES";
+
 const newsOrgApiKey = process.env.REACT_APP_NEWS_API_ORG_API_KEY;
 const guardianApiKey = process.env.REACT_APP_GUARDIAN_API_KEY;
 const newsApiOrgBaseUrl = process.env.REACT_APP_NEWS_API_ORG_BASE_URL;
@@ -32,5 +34,12 @@ export const getNews = (query) => {
       .catch((error) => {
         dispatch({ type: GET_NEWS_FAILURE, paylaod: error });
       });
+  };
+};
+
+export const filterArticles = (searchTerm) => {
+  return {
+    type: FILTER_ARTICLES,
+    payload: searchTerm,
   };
 };
