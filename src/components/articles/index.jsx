@@ -1,21 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import ArticleCard from "../article-card";
-import DropdownButton from "../articles-filter-dropdown";
+import ArticlesFilterDropdown from "../articles-filter-dropdown";
 
 const Articles = () => {
   const { filteredNews } = useSelector((state) => state.getNews);
+  const [selectedSource, setSelectedSource] = useState("All");
+  const [selectedSort, setSelectedSort] = useState("Date");
 
   const sortByDateOptions = [
     {
       id: "newest",
       label: "Newest",
-      onClick: () => console.log("Hello world"),
+      onClick: () => {
+        setSelectedSort("Newest");
+        console.log("Newest selected");
+      },
     },
     {
       id: "oldest",
       label: "Oldest",
-      onClick: () => console.log("Hello world"),
+      onClick: () => {
+        setSelectedSort("Oldest");
+        console.log("Oldest selected");
+      },
     },
   ];
 
@@ -24,30 +32,39 @@ const Articles = () => {
       id: "all-articles",
       label: "All",
       source: "",
+      onClick: () => setSelectedSource("All"),
     },
     {
       id: "news-api-org",
       label: "NewsAPI.org",
       source: "NewsAPI",
+      onClick: () => setSelectedSource("NewsAPI.org"),
     },
     {
       id: "guardian",
       label: "Guardian API",
       source: "Guardian",
+      onClick: () => setSelectedSource("Guardian API"),
     },
     {
       id: "ny-times",
-      label: "New York Times API",
+      label: "New York Times",
       source: "NYT",
+      onClick: () => setSelectedSource("New York Times"),
     },
   ];
 
-  console.log(filteredNews, "filteredNews");
   return (
     <div className="w-full m-auto">
       <div className="lg:w-3/4 md:w-11/12 m-auto flex gap-3 justify-end relative mb-6">
-        <DropdownButton items={sortByDateOptions} title={"Date"} />
-        <DropdownButton items={filterBySourceOptions} title={"Source"} />
+        <ArticlesFilterDropdown
+          items={sortByDateOptions}
+          title={selectedSort}
+        />
+        <ArticlesFilterDropdown
+          items={filterBySourceOptions}
+          title={selectedSource}
+        />
       </div>
 
       <div className="flex flex-wrap gap-0 md:gap-5 lg:gap-10 xl:gap-20 lg:w-[95%] xl:w-[85%] sm:w-[95%] mx-auto">

@@ -57,6 +57,12 @@ const getNewsReducer = (state = initialState, action) => {
       };
     case FILTER_BY_SOURCE:
       const source = action.payload?.toLowerCase();
+      if (!source) {
+        return {
+          ...state,
+          filteredNews: state.news,
+        };
+      }
       const filteredBySource = state.news.filter(
         (article) => article?.source?.toLowerCase() === source
       );

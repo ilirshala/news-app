@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { filterBySource } from "../../store/actions/getNews.action";
 
-const DropdownButton = ({ title, items }) => {
+const ArticlesFilterDropdown = ({ title, items }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const toggleDropdown = () => {
@@ -48,7 +48,10 @@ const DropdownButton = ({ title, items }) => {
               <li
                 key={index}
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 cursor-pointer"
-                onClick={() => dispatch(filterBySource(item.source))}
+                onClick={() => {
+                  dispatch(filterBySource(item.source));
+                  item?.onClick();
+                }}
               >
                 {item.label}
               </li>
@@ -60,4 +63,4 @@ const DropdownButton = ({ title, items }) => {
   );
 };
 
-export default DropdownButton;
+export default ArticlesFilterDropdown;
