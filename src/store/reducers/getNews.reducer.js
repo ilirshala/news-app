@@ -1,3 +1,4 @@
+import { sortByDate } from "../../utils/utils";
 import {
   GET_NEWS,
   GET_NEWS_FAILURE,
@@ -14,6 +15,7 @@ const initialState = {
   filteredNews: [],
   error: "",
   selectedCategory: "all",
+  dateType: "",
 };
 
 const getNewsReducer = (state = initialState, action) => {
@@ -23,14 +25,19 @@ const getNewsReducer = (state = initialState, action) => {
         ...state,
         loading: true,
       };
-    case GET_NEWS_SUCCESS:
+    case GET_NEWS_SUCCESS: {
+      let news = action.payload;
+      if (state.dateType) {
+        news = sortByDate(news, state.dateType.toLowerCase());
+      }
       return {
         ...state,
         loading: false,
-        news: action.payload,
-        filteredNews: action.payload,
+        news,
+        filteredNews: news,
         error: "",
       };
+    }
     case GET_NEWS_FAILURE:
       return {
         ...state,
@@ -50,7 +57,6 @@ const getNewsReducer = (state = initialState, action) => {
         ...state,
         filteredNews: filteredArticles,
       };
-
     case FILTER_BY_CATEGORY:
       return {
         ...state,
@@ -80,22 +86,12 @@ const getNewsReducer = (state = initialState, action) => {
           filteredNews: state.news,
         };
       }
-
-      const sortedNews = [...state.news].sort((a, b) => {
-        const dateA = a.publishedAt;
-        const dateB = b.publishedAt;
-
-        if (dateType === "newest") {
-          return new Date(dateB) - new Date(dateA);
-        } else {
-          return new Date(dateA) - new Date(dateB);
-        }
-      });
+      const sortedNews = sortByDate(state.news, dateType);
       return {
         ...state,
         filteredNews: sortedNews,
+        dateType: action.payload,
       };
-
     default:
       return state;
   }
