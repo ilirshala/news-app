@@ -8,6 +8,11 @@ import {
   GET_NEWS_FAILURE,
   GET_NEWS_SUCCESS,
 } from "./types";
+import {
+  guardianApiBaseUrl,
+  newsApiBaseUrl,
+  nyTimesBaseUrl,
+} from "../../constants/api";
 
 export const getNews = (query) => {
   return (dispatch) => {
@@ -26,21 +31,21 @@ export const getNews = (query) => {
 
     if (selectedSources.includes("NewsAPI")) {
       const newsApiRequest = axios.get(
-        `https://newsapi.org/v2/everything?q=${query}&apiKey=${newsOrgApiKey}`
+        `${newsApiBaseUrl}everything?q=${query}&apiKey=${newsOrgApiKey}`
       );
       requests.push(newsApiRequest);
     }
 
     if (selectedSources.includes("Guardian")) {
       const guardianRequest = axios.get(
-        `https://content.guardianapis.com/search?q=${query}&api-key=${guardianApiKey}`
+        `${guardianApiBaseUrl}search?q=${query}&api-key=${guardianApiKey}`
       );
       requests.push(guardianRequest);
     }
 
     if (selectedSources.includes("NY Times")) {
       const nytRequest = axios.get(
-        `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${query}&api-key=${nyTimesApiKey}`
+        `${nyTimesBaseUrl}articlesearch.json?q=${query}&api-key=${nyTimesApiKey}`
       );
       requests.push(nytRequest);
     }
