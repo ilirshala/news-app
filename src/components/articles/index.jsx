@@ -59,7 +59,7 @@ const Articles = () => {
     {
       id: "ny-times",
       label: "New York Times",
-      source: "NYT",
+      source: "NYTimes",
       onClick: () => setSelectedSource("New York Times"),
     },
   ];
