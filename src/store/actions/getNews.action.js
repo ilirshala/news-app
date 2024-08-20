@@ -24,59 +24,59 @@ export const getNews = (query) => {
       `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${query}&api-key=${nyTimesApiKey}`
     );
 
-    axios
-      .all([newsApiRequest, guardianRequest, nytRequest])
-      .then(
-        axios.spread((newsApiResponse, guardianResponse, nytResponse) => {
-          const newsApiArticles = newsApiResponse.data.articles.map(
-            (article) => ({
-              title: article.title,
-              category: article.source.name || "NewsAPI",
-              source: "NewsAPI",
-              url: article.url,
-              description: article.description,
-              publishedAt: article.publishedAt,
-              author: article.author || "Unknown",
-            })
-          );
+    // axios
+    //   .all([newsApiRequest, guardianRequest, nytRequest])
+    //   .then(
+    //     axios.spread((newsApiResponse, guardianResponse, nytResponse) => {
+    //       const newsApiArticles = newsApiResponse.data.articles.map(
+    //         (article) => ({
+    //           title: article.title,
+    //           category: article.source.name || "NewsAPI",
+    //           source: "NewsAPI",
+    //           url: article.url,
+    //           description: article.description,
+    //           publishedAt: article.publishedAt,
+    //           author: article.author || "Unknown",
+    //         })
+    //       );
 
-          const guardianArticles = guardianResponse.data.response.results.map(
-            (article) => ({
-              title: article.webTitle,
-              category: article.sectionName,
-              source: "Guardian",
-              url: article.webUrl,
-              description:
-                article.fields?.trailText ||
-                article.fields?.bodyText ||
-                "No description available",
-              publishedAt: article.webPublicationDate,
-              author: article.fields?.byline || "Unknown",
-            })
-          );
+    //       const guardianArticles = guardianResponse.data.response.results.map(
+    //         (article) => ({
+    //           title: article.webTitle,
+    //           category: article.sectionName,
+    //           source: "Guardian",
+    //           url: article.webUrl,
+    //           description:
+    //             article.fields?.trailText ||
+    //             article.fields?.bodyText ||
+    //             "No description available",
+    //           publishedAt: article.webPublicationDate,
+    //           author: article.fields?.byline || "Unknown",
+    //         })
+    //       );
 
-          const nytArticles = nytResponse.data.response.docs.map((article) => ({
-            title: article.headline.main,
-            category: article.section_name || "General",
-            source: "NYT",
-            url: article.web_url,
-            description: article.snippet,
-            publishedAt: article.pub_date,
-            author: article.byline?.original || "Unknown",
-          }));
+    //       const nytArticles = nytResponse.data.response.docs.map((article) => ({
+    //         title: article.headline.main,
+    //         category: article.section_name || "General",
+    //         source: "NYT",
+    //         url: article.web_url,
+    //         description: article.snippet,
+    //         publishedAt: article.pub_date,
+    //         author: article.byline?.original || "Unknown",
+    //       }));
 
-          const articles = [
-            ...newsApiArticles,
-            ...guardianArticles,
-            ...nytArticles,
-          ];
+    //       const articles = [
+    //         ...newsApiArticles,
+    //         ...guardianArticles,
+    //         ...nytArticles,
+    //       ];
 
-          dispatch({ type: GET_NEWS_SUCCESS, payload: articles });
-        })
-      )
-      .catch((error) => {
-        dispatch({ type: GET_NEWS_FAILURE, payload: error });
-      });
+    //       dispatch({ type: GET_NEWS_SUCCESS, payload: articles });
+    //     })
+    //   )
+    //   .catch((error) => {
+    //     dispatch({ type: GET_NEWS_FAILURE, payload: error });
+    //   });
   };
 };
 export const filterArticles = (searchTerm) => {

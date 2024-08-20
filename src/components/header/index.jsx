@@ -1,8 +1,20 @@
 import React from "react";
 import { FiSettings } from "react-icons/fi";
 import { useDispatch } from "react-redux";
-import { filterArticles } from "../../store/actions/getNews.action";
+import {
+  filterArticles,
+  // filterArticlesByCategory,
+} from "../../store/actions/getNews.action";
 import { useScrollHook } from "../../hooks/useScrollHook";
+
+const categories = [
+  "All",
+  "Technology",
+  "Sports",
+  "Health",
+  "Business",
+  "Entertainment",
+];
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -13,34 +25,61 @@ const Header = () => {
     dispatch(filterArticles(searchTerm));
   };
 
+  const handleCategoryClick = (category) => {
+    console.log(category, "category");
+    // dispatch(filterArticlesByCategory(category));
+  };
+
   return (
     <header
-      className={`px-3 fixed top-0 left-0 z-40 w-full flex items-center justify-center lg:justify-between md:px-20 lg:px-32 md:justify-between gap-2 lg:gap-0 p-4 transition-all duration-300 ${
+      className={`fixed top-0 left-0 z-40 w-full flex flex-col items-center lg:items-start justify-center lg:justify-between  transition-all duration-300 ${
         isScrolled ? "bg-white shadow-lg" : "bg-transparent"
       }`}
     >
-      <div
-        className={`text-xl font-bold ${
-          isScrolled ? "text-black" : "text-white"
+      <div className="px-3 md:px-20 lg:px-32   w-full flex items-center justify-between">
+        <div
+          className={`text-xl font-bold ${
+            isScrolled ? "text-black" : "text-white"
+          }`}
+        >
+          newsApp
+        </div>
+        <div className="flex items-center space-x-4 my-4 ">
+          <input
+            type="text"
+            placeholder="Search..."
+            className={`p-2 w-64 border rounded-md focus:outline-none focus:ring focus:border-blue-300 bg-transparent ${
+              isScrolled ? "text-black" : "text-white"
+            }`}
+            onChange={handleFilterSearch}
+          />
+          <FiSettings
+            className={`text-2xl cursor-pointer ${
+              isScrolled ? "text-black" : "text-white"
+            }`}
+          />
+        </div>
+      </div>
+      <nav
+        className={`w-full overflow-x-auto mt-2 py-2 ${
+          isScrolled && "border-t border-gray-200"
         }`}
       >
-        newsApp
-      </div>
-      <div className="flex items-center space-x-4">
-        <input
-          type="text"
-          placeholder="Search..."
-          className={`p-2 w-64 border rounded-md focus:outline-none focus:ring focus:border-blue-300 bg-transparent ${
-            isScrolled ? "text-black" : "text-white"
-          }`}
-          onChange={handleFilterSearch}
-        />
-        <FiSettings
-          className={`text-2xl cursor-pointer ${
-            isScrolled ? "text-black" : "text-white"
-          }`}
-        />
-      </div>
+        <ul className="w-11/12 flex justify-normal md:justify-center lg:justify-center space-x-4 lg:space-x-8 m-auto">
+          {categories.map((category) => (
+            <li key={category}>
+              <button
+                onClick={() => handleCategoryClick(category)}
+                className={`p-2 rounded-md transition-all duration-300 ${
+                  isScrolled ? "text-black" : "text-white"
+                } ${isScrolled ? "hover:bg-gray-200" : "hover:bg-gray-700"}`}
+              >
+                {category}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 };
