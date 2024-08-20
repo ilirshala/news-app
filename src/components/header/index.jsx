@@ -7,19 +7,11 @@ import {
 } from "../../store/actions/getNews.action";
 import { useScrollHook } from "../../hooks/useScrollHook";
 
-const categories = [
-  "All",
-  "Technology",
-  "Sports",
-  "Health",
-  "Business",
-  "Entertainment",
-];
-
-const Header = () => {
+const Header = ({ onClickSettings }) => {
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.getNews);
   const { isScrolled } = useScrollHook();
+  const newsAppSettings = JSON.parse(localStorage.getItem("newsAppSettings"));
 
   console.log(selectedCategory, "selectedCategory");
 
@@ -60,6 +52,7 @@ const Header = () => {
             className={`text-2xl cursor-pointer ${
               isScrolled ? "text-black" : "text-white"
             }`}
+            onClick={onClickSettings}
           />
         </div>
       </div>
@@ -69,7 +62,7 @@ const Header = () => {
         }`}
       >
         <ul className="w-11/12 flex justify-normal md:justify-center lg:justify-center space-x-4 lg:space-x-8 m-auto">
-          {categories.map((category) => (
+          {["All", ...newsAppSettings?.categories]?.map((category) => (
             <li key={category}>
               <button
                 onClick={() => handleCategoryClick(category)}
