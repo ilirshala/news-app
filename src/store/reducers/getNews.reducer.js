@@ -5,6 +5,7 @@ import {
   FILTER_ARTICLES,
   FILTER_BY_CATEGORY,
   FILTER_BY_SOURCE,
+  FILTER_BY_DATE,
 } from "../actions/getNews.action";
 
 const initialState = {
@@ -66,11 +67,35 @@ const getNewsReducer = (state = initialState, action) => {
       const filteredBySource = state.news.filter(
         (article) => article?.source?.toLowerCase() === source
       );
-      console.log(filteredBySource, "filteredBySource");
       return {
         ...state,
         filteredNews: filteredBySource,
       };
+    case FILTER_BY_DATE:
+      const dateType = action.payload?.toLowerCase();
+
+      if (!dateType) {
+        return {
+          ...state,
+          filteredNews: state.news,
+        };
+      }
+
+      const sortedNews = [...state.news].sort((a, b) => {
+        const dateA = a.publishedAt;
+        const dateB = b.publishedAt;
+
+        if (dateType === "newest") {
+          return new Date(dateB) - new Date(dateA);
+        } else {
+          return new Date(dateA) - new Date(dateB);
+        }
+      });
+      return {
+        ...state,
+        filteredNews: sortedNews,
+      };
+
     default:
       return state;
   }

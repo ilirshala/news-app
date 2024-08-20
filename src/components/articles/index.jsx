@@ -1,20 +1,30 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ArticleCard from "../article-card";
 import ArticlesFilterDropdown from "../articles-filter-dropdown";
+import { filterByDate } from "../../store/actions/getNews.action";
 
 const Articles = () => {
+  const dispatch = useDispatch();
   const { filteredNews } = useSelector((state) => state.getNews);
   const [selectedSource, setSelectedSource] = useState("All");
   const [selectedSort, setSelectedSort] = useState("Date");
 
   const sortByDateOptions = [
     {
+      id: "default",
+      label: "Default",
+      onClick: () => {
+        setSelectedSort("Default");
+        dispatch(filterByDate(""));
+      },
+    },
+    {
       id: "newest",
       label: "Newest",
       onClick: () => {
         setSelectedSort("Newest");
-        console.log("Newest selected");
+        dispatch(filterByDate("Newest"));
       },
     },
     {
@@ -22,7 +32,7 @@ const Articles = () => {
       label: "Oldest",
       onClick: () => {
         setSelectedSort("Oldest");
-        console.log("Oldest selected");
+        dispatch(filterByDate("Oldest"));
       },
     },
   ];

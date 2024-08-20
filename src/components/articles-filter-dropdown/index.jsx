@@ -9,6 +9,12 @@ const ArticlesFilterDropdown = ({ title, items }) => {
     setIsOpen(!isOpen);
   };
 
+  const handleDropdownItemClick = (item) => {
+    dispatch(filterBySource(item.source));
+    item?.onClick();
+    toggleDropdown();
+  };
+
   return (
     <div className="relative inline-block text-left">
       <button
@@ -48,10 +54,7 @@ const ArticlesFilterDropdown = ({ title, items }) => {
               <li
                 key={index}
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 cursor-pointer"
-                onClick={() => {
-                  dispatch(filterBySource(item.source));
-                  item?.onClick();
-                }}
+                onClick={() => handleDropdownItemClick(item)}
               >
                 {item.label}
               </li>

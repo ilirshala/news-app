@@ -7,6 +7,7 @@ export const GET_NEWS_FAILURE = "GET_NEWS_FAILURE";
 export const FILTER_ARTICLES = "FILTER_ARTICLES";
 export const FILTER_BY_CATEGORY = "FILTER_BY_CATEGORY";
 export const FILTER_BY_SOURCE = "FILTER_BY_SOURCE";
+export const FILTER_BY_DATE = "FILTER_BY_DATE";
 
 export const getNews = (query) => {
   return (dispatch) => {
@@ -95,9 +96,15 @@ export const filterByCategory = (category) => {
 };
 
 export const filterBySource = (source) => {
-  console.log(source, "source");
   return {
     type: FILTER_BY_SOURCE,
     payload: source,
+  };
+};
+
+export const filterByDate = (type) => {
+  return {
+    type: FILTER_BY_DATE,
+    payload: type,
   };
 };
