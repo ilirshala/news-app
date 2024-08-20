@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getNews } from "../store/actions/getNews.action";
+import { getNews } from "../redux/actions/getNews.action";
 
 export const useGetArticles = () => {
   const dispatch = useDispatch();

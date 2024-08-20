@@ -7,7 +7,7 @@ import {
   FILTER_BY_CATEGORY,
   FILTER_BY_SOURCE,
   FILTER_BY_DATE,
-} from "../actions/getNews.action";
+} from "../actions/types";
 
 const initialState = {
   loading: false,

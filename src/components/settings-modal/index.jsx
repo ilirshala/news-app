@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { getNews } from "../../store/actions/getNews.action";
+import { getNews } from "../../redux/actions/getNews.action";
 
 const SettingsModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();

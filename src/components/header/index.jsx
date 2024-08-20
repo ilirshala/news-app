@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   filterArticles,
   filterByCategory,
-} from "../../store/actions/getNews.action";
+} from "../../redux/actions/getNews.action";
 import { useScrollHook } from "../../hooks/useScrollHook";
 
 const Header = ({ onClickSettings }) => {

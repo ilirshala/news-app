@@ -1,13 +1,13 @@
 import axios from "axios";
-
-export const GET_NEWS = "GET_NEWS";
-export const GET_NEWS_SUCCESS = "GET_NEWS_SUCCESS";
-export const GET_NEWS_FAILURE = "GET_NEWS_FAILURE";
-
-export const FILTER_ARTICLES = "FILTER_ARTICLES";
-export const FILTER_BY_CATEGORY = "FILTER_BY_CATEGORY";
-export const FILTER_BY_SOURCE = "FILTER_BY_SOURCE";
-export const FILTER_BY_DATE = "FILTER_BY_DATE";
+import {
+  FILTER_ARTICLES,
+  FILTER_BY_CATEGORY,
+  FILTER_BY_DATE,
+  FILTER_BY_SOURCE,
+  GET_NEWS,
+  GET_NEWS_FAILURE,
+  GET_NEWS_SUCCESS,
+} from "./types";
 
 export const getNews = (query) => {
   return (dispatch) => {

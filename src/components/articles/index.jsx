@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArticleCard from "../article-card";
 import ArticlesFilterDropdown from "../articles-filter-dropdown";
-import { filterByDate } from "../../store/actions/getNews.action";
+import { filterByDate } from "../../redux/actions/getNews.action";
 
 const Articles = () => {
   const dispatch = useDispatch();

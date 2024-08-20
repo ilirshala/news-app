@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { filterBySource } from "../../store/actions/getNews.action";
+import { filterBySource } from "../../redux/actions/getNews.action";
 
 const ArticlesFilterDropdown = ({ title, items }) => {
   const [isOpen, setIsOpen] = useState(false);
