@@ -1,9 +1,9 @@
 import React from "react";
 import { FiSettings } from "react-icons/fi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   filterArticles,
-  // filterArticlesByCategory,
+  filterByCategory,
 } from "../../store/actions/getNews.action";
 import { useScrollHook } from "../../hooks/useScrollHook";
 
@@ -18,7 +18,10 @@ const categories = [
 
 const Header = () => {
   const dispatch = useDispatch();
+  const { selectedCategory } = useSelector((state) => state.getNews);
   const { isScrolled } = useScrollHook();
+
+  console.log(selectedCategory, "selectedCategory");
 
   const handleFilterSearch = (e) => {
     const searchTerm = e.target.value;
@@ -27,7 +30,7 @@ const Header = () => {
 
   const handleCategoryClick = (category) => {
     console.log(category, "category");
-    // dispatch(filterArticlesByCategory(category));
+    dispatch(filterByCategory(category?.toLowerCase()));
   };
 
   return (
@@ -72,6 +75,12 @@ const Header = () => {
                 onClick={() => handleCategoryClick(category)}
                 className={`p-2 rounded-md transition-all duration-300 ${
                   isScrolled ? "text-black" : "text-white"
+                } ${
+                  selectedCategory.toLowerCase() === category.toLowerCase()
+                    ? isScrolled
+                      ? "bg-gray-200"
+                      : "bg-gray-700"
+                    : ""
                 } ${isScrolled ? "hover:bg-gray-200" : "hover:bg-gray-700"}`}
               >
                 {category}

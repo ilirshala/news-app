@@ -3,6 +3,7 @@ import {
   GET_NEWS_FAILURE,
   GET_NEWS_SUCCESS,
   FILTER_ARTICLES,
+  FILTER_BY_CATEGORY,
 } from "../actions/getNews.action";
 
 const initialState = {
@@ -10,6 +11,7 @@ const initialState = {
   news: [],
   filteredNews: [],
   error: "",
+  selectedCategory: "all",
 };
 
 const getNewsReducer = (state = initialState, action) => {
@@ -45,6 +47,11 @@ const getNewsReducer = (state = initialState, action) => {
       return {
         ...state,
         filteredNews: filteredArticles,
+      };
+    case FILTER_BY_CATEGORY:
+      return {
+        ...state,
+        selectedCategory: action.payload,
       };
     default:
       return state;
