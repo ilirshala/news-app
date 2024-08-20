@@ -4,6 +4,7 @@ import {
   GET_NEWS_SUCCESS,
   FILTER_ARTICLES,
   FILTER_BY_CATEGORY,
+  FILTER_BY_SOURCE,
 } from "../actions/getNews.action";
 
 const initialState = {
@@ -48,10 +49,21 @@ const getNewsReducer = (state = initialState, action) => {
         ...state,
         filteredNews: filteredArticles,
       };
+
     case FILTER_BY_CATEGORY:
       return {
         ...state,
         selectedCategory: action.payload,
+      };
+    case FILTER_BY_SOURCE:
+      const source = action.payload?.toLowerCase();
+      const filteredBySource = state.news.filter(
+        (article) => article?.source?.toLowerCase() === source
+      );
+      console.log(filteredBySource, "filteredBySource");
+      return {
+        ...state,
+        filteredNews: filteredBySource,
       };
     default:
       return state;
