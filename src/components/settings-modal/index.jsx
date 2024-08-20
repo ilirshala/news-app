@@ -50,7 +50,6 @@ const SettingsModal = ({ isOpen, onClose }) => {
         isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >
-      {/* Background Overlay */}
       <div
         className="fixed inset-0 bg-black opacity-50"
         onClick={onClose}
