@@ -56,7 +56,7 @@ export const formatArticles = {
     return response.response.docs.map((article) => ({
       title: article.headline.main,
       category: article.section_name || "General",
-      source: "NYTimes",
+      source: "NY Times",
       url: article.web_url,
       description: article.snippet,
       publishedAt: article.pub_date,
