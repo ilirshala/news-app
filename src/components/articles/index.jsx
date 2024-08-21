@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArticleCard from "../article-card";
 import ArticlesFilterDropdown from "../articles-filter-dropdown";
@@ -9,6 +9,7 @@ const Articles = () => {
   const { filteredNews } = useSelector((state) => state.getNews);
   const [selectedSource, setSelectedSource] = useState("All");
   const [selectedSort, setSelectedSort] = useState("Date");
+  const [articles, setArticles] = useState(filteredNews);
 
   const sortByDateOptions = [
     {
@@ -64,8 +65,20 @@ const Articles = () => {
     },
   ];
 
+  useEffect(() => {
+    const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
+    if (settings?.author?.length > 0) {
+      const filteredByAuthor = filteredNews?.filter((article) =>
+        article?.author?.includes(settings.author)
+      );
+      setArticles(filteredByAuthor);
+    } else {
+      setArticles(filteredNews);
+    }
+  }, [filteredNews]);
+
   return (
-    <div className="w-full m-auto">
+    <div className="w-full m-auto mb-5">
       <div className="lg:w-3/4 md:w-11/12 m-auto flex gap-3 justify-end relative mb-6">
         <ArticlesFilterDropdown
           items={sortByDateOptions}
@@ -78,7 +91,7 @@ const Articles = () => {
       </div>
 
       <div className="flex flex-wrap gap-0 md:gap-5 lg:gap-10 xl:gap-20 lg:w-[95%] xl:w-[85%] sm:w-[95%] mx-auto">
-        {filteredNews?.map((article) => (
+        {articles?.map((article) => (
           <ArticleCard article={article} key={article.id} />
         ))}
       </div>

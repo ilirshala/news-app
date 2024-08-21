@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getNews } from "../../redux/actions/getNews.action";
-import { articleCategories, articleSources } from "../../constants/constants";
+import { articleCategories } from "../../constants/constants";
 
 const SettingsModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const [authors, setAuthors] = useState([]);
   const [selectedAuthor, setSelectedAuthor] = useState("");
   const { filteredNews } = useSelector((state) => state.getNews);
-
+  const articleSources = ["NewsAPI", "NY Times", "Guardian"];
   useEffect(() => {
     const filteredBySources = filteredNews.filter((newsItem) =>
       selectedSources.includes(newsItem.source)
@@ -119,6 +119,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             className="mt-2 p-2 border border-gray-300 rounded w-full"
           >
             <option value="">Select an author</option>
+            <option value="">Default</option>
             {authors?.map((author, index) => (
               <option key={index} value={author}>
                 {author}
