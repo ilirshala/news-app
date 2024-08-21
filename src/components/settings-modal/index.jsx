@@ -25,7 +25,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
   const toggleSelection = (selectedList, setSelectedList, value) => {
     setSelectedList((prev) => {
-      if (prev.includes(value)) {
+      if (prev?.includes(value)) {
         return prev.filter((item) => item !== value);
       } else {
         return [...prev, value];
@@ -75,7 +75,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                   )
                 }
                 className={`m-1 px-2 py-1 rounded border ${
-                  selectedCategories.includes(category)
+                  selectedCategories?.includes(category)
                     ? "bg-blue-500 text-white"
                     : "bg-gray-200 text-gray-700"
                 }`}
@@ -96,7 +96,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                   toggleSelection(selectedSources, setSelectedSources, source)
                 }
                 className={`m-1 px-2 py-1 rounded border ${
-                  selectedSources.includes(source)
+                  selectedSources?.includes(source)
                     ? "bg-blue-500 text-white"
                     : "bg-gray-200 text-gray-700"
                 }`}

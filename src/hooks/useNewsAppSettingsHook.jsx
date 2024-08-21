@@ -5,14 +5,13 @@ export const useNewsAppSettings = () => {
     const newsAppSettings = localStorage.getItem("newsAppSettings");
     const userSettings = {
       categories: [
-        "All",
         "Technology",
         "Sports",
         "Health",
         "Business",
         "Entertaiment",
       ],
-      sources: ["NewsAPI", "New York Times API", "Guardian API"],
+      sources: ["NewsAPI", "NY Times", "Guardian"],
       authors: [],
     };
     if (!newsAppSettings)

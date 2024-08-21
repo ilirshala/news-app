@@ -62,24 +62,25 @@ const Header = ({ onClickSettings }) => {
         }`}
       >
         <ul className="w-11/12 flex justify-normal md:justify-center lg:justify-center space-x-4 lg:space-x-8 m-auto">
-          {["All", ...newsAppSettings?.categories]?.map((category) => (
-            <li key={category}>
-              <button
-                onClick={() => handleCategoryClick(category)}
-                className={`p-2 rounded-md transition-all duration-300 ${
-                  isScrolled ? "text-black" : "text-white"
-                } ${
-                  selectedCategory.toLowerCase() === category.toLowerCase()
-                    ? isScrolled
-                      ? "bg-gray-200"
-                      : "bg-gray-700"
-                    : ""
-                } ${isScrolled ? "hover:bg-gray-200" : "hover:bg-gray-700"}`}
-              >
-                {category}
-              </button>
-            </li>
-          ))}
+          {newsAppSettings &&
+            ["All", ...newsAppSettings?.categories]?.map((category) => (
+              <li key={category}>
+                <button
+                  onClick={() => handleCategoryClick(category)}
+                  className={`p-2 rounded-md transition-all duration-300 ${
+                    isScrolled ? "text-black" : "text-white"
+                  } ${
+                    selectedCategory.toLowerCase() === category.toLowerCase()
+                      ? isScrolled
+                        ? "bg-gray-200"
+                        : "bg-gray-700"
+                      : ""
+                  } ${isScrolled ? "hover:bg-gray-200" : "hover:bg-gray-700"}`}
+                >
+                  {category}
+                </button>
+              </li>
+            ))}
         </ul>
       </nav>
     </header>
