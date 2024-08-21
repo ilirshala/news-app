@@ -5,7 +5,6 @@ import { articleCategories, articleSources } from "../../constants/constants";
 
 const SettingsModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
-  const { filteredNews } = useSelector((state) => state.getNews);
   const newsAppSettings = JSON.parse(localStorage.getItem("newsAppSettings"));
   const [selectedCategories, setSelectedCategories] = useState(
     newsAppSettings?.categories
@@ -15,6 +14,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
   );
   const [authors, setAuthors] = useState([]);
   const [selectedAuthor, setSelectedAuthor] = useState("");
+  const { filteredNews } = useSelector((state) => state.getNews);
 
   useEffect(() => {
     const filteredBySources = filteredNews.filter((newsItem) =>
@@ -27,7 +27,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     setAuthors(authors);
   }, [filteredNews, selectedSources]);
 
-  const toggleSelection = (setSelectedList, value) => {
+  const toggleSelection = (selectedList, setSelectedList, value) => {
     setSelectedList((prev) => {
       if (prev?.includes(value)) {
         return prev.filter((item) => item !== value);

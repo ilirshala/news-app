@@ -6,9 +6,12 @@ const ArticleCard = ({ article }) => {
   const articleDate = article?.publishedAt;
   return (
     <div className="m-auto lg:m-0 p-3 border border-gray-300 rounded-lg shadow-sm transition-transform duration-300 hover:shadow-lg hover:scale-105 flex flex-col h-72 w-[95%] sm:w-[95%] md:w-[45%] lg:w-[30%] xl:w-[20%] cursor-pointer mt-5 lg:mt-4">
-      <p className="text-xs font-bold text-white mb-3 px-2 py-1 rounded-full bg-red-700 w-fit">
-        {article?.sectionName || "News"}
-      </p>
+      <div className="w-full flex items-center justify-between mb-3">
+        <p className="text-xs font-bold text-white  px-2 py-1 rounded-full bg-red-700 w-fit">
+          {article?.sectionName || "News"}
+        </p>
+        <p className="text-xs font-bold text-gray-500">{article?.author}</p>
+      </div>
       <h2 className="text-md font-bold">
         {article?.title || article?.webTitle}
       </h2>
