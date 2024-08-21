@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getNews } from "../../redux/actions/getNews.action";
+import { articleCategories, articleSources } from "../../constants/constants";
 
 const SettingsModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
+  const { filteredNews } = useSelector((state) => state.getNews);
   const newsAppSettings = JSON.parse(localStorage.getItem("newsAppSettings"));
   const [selectedCategories, setSelectedCategories] = useState(
     newsAppSettings?.categories
@@ -11,19 +13,21 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const [selectedSources, setSelectedSources] = useState(
     newsAppSettings?.sources
   );
+  const [authors, setAuthors] = useState([]);
   const [selectedAuthor, setSelectedAuthor] = useState("");
 
-  const categories = [
-    "Technology",
-    "Sports",
-    "Health",
-    "Business",
-    "Entertaiment",
-  ];
-  const sources = ["NewsAPI", "NY Times", "Guardian"];
-  //   const authors = ["Author 1", "Author 2", "Author 3"];
+  useEffect(() => {
+    const filteredBySources = filteredNews.filter((newsItem) =>
+      selectedSources.includes(newsItem.source)
+    );
 
-  const toggleSelection = (selectedList, setSelectedList, value) => {
+    const authors = filteredBySources
+      .map((newsItem) => newsItem?.author)
+      .filter((author) => author !== "Unknown");
+    setAuthors(authors);
+  }, [filteredNews, selectedSources]);
+
+  const toggleSelection = (setSelectedList, value) => {
     setSelectedList((prev) => {
       if (prev?.includes(value)) {
         return prev.filter((item) => item !== value);
@@ -64,7 +68,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
         <div className="mb-4">
           <label className="block text-gray-700">Categories:</label>
           <div className="mt-2 flex flex-wrap">
-            {categories?.map((category, index) => (
+            {articleCategories?.map((category, index) => (
               <button
                 key={index}
                 onClick={() =>
@@ -89,7 +93,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
         <div className="mb-4">
           <label className="block text-gray-700">Sources:</label>
           <div className="mt-2 flex flex-wrap">
-            {sources?.map((source, index) => (
+            {articleSources?.map((source, index) => (
               <button
                 key={index}
                 onClick={() =>
@@ -115,7 +119,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             className="mt-2 p-2 border border-gray-300 rounded w-full"
           >
             <option value="">Select an author</option>
-            {newsAppSettings?.authors?.map((author, index) => (
+            {authors?.map((author, index) => (
               <option key={index} value={author}>
                 {author}
               </option>
