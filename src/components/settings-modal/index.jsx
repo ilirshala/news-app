@@ -10,7 +10,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const [availableAuthors, setAvailableAuthors] = useState([]);
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedAuthor, setSelectedAuthor] = useState("");
-  const { filteredNews, selectedCategory, selectedSource } = useSelector(
+  const { filteredNews, selectedCategory } = useSelector(
     (state) => state.getNews
   );
   const articleSources = ["NewsAPI", "NY Times", "Guardian"];
@@ -68,7 +68,6 @@ const SettingsModal = ({ isOpen, onClose }) => {
     dispatch(
       getNews(
         selectedCategory === "home" ? "latest" : selectedCategory,
-        selectedSource,
         selectedCategory
       )
     );

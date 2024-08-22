@@ -22,10 +22,7 @@ const Articles = ({ searchParams }) => {
   const [categoryFilter, setCategoryFilter] = useState("General");
   const [categories, setCategories] = useState([]);
   const [filterBySourceOptions, setFilterBySourceOptions] = useState([]);
-  const settings = useMemo(
-    () => JSON.parse(localStorage.getItem("newsAppSettings")) || {},
-    []
-  );
+  const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
 
   const resetFilters = () => {
     setDateFilter("Date");
@@ -58,6 +55,8 @@ const Articles = ({ searchParams }) => {
           onClick: () => console.log("source", source),
         })),
       ];
+
+      console.log(sourcesPerUser, "sourcesPerUser");
 
       setFilterBySourceOptions((prevOptions) => {
         const prevIds = prevOptions?.map((option) => option.id);
