@@ -4,16 +4,13 @@ import { getNews } from "../redux/actions/getNews.action";
 
 export const useGetArticles = () => {
   const dispatch = useDispatch();
-  const { selectedCategory, selectedSource } = useSelector(
-    (state) => state.getNews
-  );
+  const { selectedCategory } = useSelector((state) => state.getNews);
   useEffect(() => {
     dispatch(
       getNews(
         selectedCategory === "home" ? "latest" : selectedCategory,
-        selectedSource,
         selectedCategory
       )
     );
-  }, [dispatch, selectedCategory, selectedSource]);
+  }, [dispatch, selectedCategory]);
 };

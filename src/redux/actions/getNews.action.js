@@ -8,7 +8,7 @@ import {
 import { sourceRequests } from "../../constants/newsApiRequests";
 import { formatArticles } from "../../utils/utils";
 
-export const getNews = (query, selectedSource, selectedCategory) => {
+export const getNews = (query, selectedCategory) => {
   return async (dispatch) => {
     dispatch({ type: GET_NEWS });
 
@@ -23,26 +23,15 @@ export const getNews = (query, selectedSource, selectedCategory) => {
 
       let articles = [];
 
-      if (selectedSource?.toLowerCase() === "all") {
-        const requests = selectedSources.map((source) =>
-          sourceRequests(query, selectedCategory)[source]()
-        );
+      const requests = selectedSources.map((source) =>
+        sourceRequests(query, selectedCategory)[source]()
+      );
 
-        const responses = await axios.all(requests);
-        articles = responses.flatMap((response, index) => {
-          const source = selectedSources[index];
-          return formatArticles[source.replace(" ", "")](response.data);
-        });
-      } else if (selectedSources.includes(selectedSource)) {
-        const response = await sourceRequests(query, selectedCategory)[
-          selectedSource
-        ]();
-        articles = formatArticles[selectedSource.replace(" ", "")](
-          response.data
-        );
-      } else {
-        throw new Error("Selected source not found in settings");
-      }
+      const responses = await axios.all(requests);
+      articles = responses.flatMap((response, index) => {
+        const source = selectedSources[index];
+        return formatArticles[source.replace(" ", "")](response.data);
+      });
 
       dispatch({ type: GET_NEWS_SUCCESS, payload: articles });
     } catch (error) {
