@@ -10,7 +10,7 @@ export const useGetArticles = () => {
   useEffect(() => {
     dispatch(
       getNews(
-        selectedCategory === "all" ? "latest" : selectedCategory,
+        selectedCategory === "home" ? "latest" : selectedCategory,
         selectedSource,
         selectedCategory
       )

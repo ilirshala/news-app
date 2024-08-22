@@ -67,7 +67,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     localStorage.setItem("newsAppSettings", JSON.stringify(settings));
     dispatch(
       getNews(
-        selectedCategory === "all" ? "latest" : selectedCategory,
+        selectedCategory === "home" ? "latest" : selectedCategory,
         selectedSource,
         selectedCategory
       )

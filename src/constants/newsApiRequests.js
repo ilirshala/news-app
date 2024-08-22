@@ -12,21 +12,21 @@ export const sourceRequests = (query, category) => ({
   NewsAPI: () =>
     axios.get(
       `${NEWS_API_BASE_URL}${
-        category === "all" ? "everything" : "top-headlines"
+        category === "home" ? "everything" : "top-headlines"
       }?${
-        category !== "all" ? `category=${category}&` : ""
+        category !== "home" ? `category=${category}&` : ""
       }q=${query}&apiKey=${NEWS_API_KEY}`
     ),
   Guardian: () =>
     axios.get(
       `${GUARDIAN_BASE_URL}search?${
-        category !== "all" ? `section=${category}&` : ""
+        category !== "home" ? `section=${category}&` : ""
       }q=${query}&api-key=${GUARDIAN_API_KEY}`
     ),
   "NY Times": () =>
     axios.get(
       `${NYTIMES_BASE_URL}articlesearch.json?${
-        category !== "all" ? `fq=news_desk:("${category}")&` : ""
+        category !== "home" ? `fq=news_desk:("${category}")&` : ""
       }q=${query}&api-key=${NYTIMES_API_KEY}`
     ),
 });

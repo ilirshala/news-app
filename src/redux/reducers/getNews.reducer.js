@@ -11,7 +11,7 @@ const initialState = {
   news: [],
   filteredNews: [],
   error: "",
-  selectedCategory: "all",
+  selectedCategory: "home",
   selectedSource: "All",
 };
 

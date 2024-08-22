@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const SearchInput = ({ isScrolled }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState("");
+  const navigate = useNavigate();
   const handleFilterSearch = () => {
-    setSearchParams({ s: searchValue });
+    navigate(`/search?s=${encodeURIComponent(searchValue)}`);
   };
 
   const handleSearchWithEnter = (e) => {
