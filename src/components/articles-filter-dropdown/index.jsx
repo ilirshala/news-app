@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 const ArticlesFilterDropdown = ({ items, title, handleFilterFunction }) => {
+  const { loading } = useSelector((state) => state.getNews);
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -11,10 +13,15 @@ const ArticlesFilterDropdown = ({ items, title, handleFilterFunction }) => {
       <button
         id="dropdownDefaultButton"
         onClick={toggleDropdown}
-        className="flex items-center w-40 justify-between gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        className="flex items-center w-42 justify-between gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
         type="button"
       >
-        {title}
+        {loading ? (
+          <div className="bg-gray-300 h-4 w-full rounded-lg animate-pulse" />
+        ) : (
+          title
+        )}
+
         <svg
           className="w-2.5 h-2.5 ms-3"
           aria-hidden="true"

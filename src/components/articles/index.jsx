@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import ArticleCard from "../article-card";
 import SkeletonCard from "../skeleton-card";
 import {
+  extractUniqueCategoriesFromApis,
   filterByAuthors,
   filterByCategory,
   filterBySearch,
@@ -10,18 +11,33 @@ import {
   sortByDate,
 } from "../../utils/utils";
 import ArticlesFilterDropdown from "../articles-filter-dropdown";
-import { categories, sortByDateOptions } from "../../constants/constants";
+import { sortByDateOptions } from "../../constants/constants";
 
 const Articles = ({ searchParams }) => {
-  const { filteredNews, loading } = useSelector((state) => state.getNews);
+  const { filteredNews, loading, getArticlesSuccess } = useSelector(
+    (state) => state.getNews
+  );
   const [dateFilter, setDateFilter] = useState("Date");
   const [sourceFilter, setSourceFilter] = useState("Source");
   const [categoryFilter, setCategoryFilter] = useState("General");
+  const [categories, setCategories] = useState([]);
   const [filterBySourceOptions, setFilterBySourceOptions] = useState([]);
   const settings = useMemo(
     () => JSON.parse(localStorage.getItem("newsAppSettings")) || {},
     []
   );
+
+  const resetFilters = () => {
+    setDateFilter("Date");
+    setSourceFilter("Source");
+    setCategoryFilter("General");
+  };
+
+  useEffect(() => {
+    if (getArticlesSuccess) {
+      resetFilters();
+    }
+  }, [getArticlesSuccess]);
 
   useEffect(() => {
     const sourcesPerUser = settings?.sources;
@@ -72,6 +88,7 @@ const Articles = ({ searchParams }) => {
     const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
     const authors = settings?.authors;
     let items = filteredNews;
+    const articlesCategories = extractUniqueCategoriesFromApis(items);
 
     // Filter by search
     if (searchParams) {
@@ -92,6 +109,10 @@ const Articles = ({ searchParams }) => {
 
     if (categoryFilter !== "General") {
       items = filterByCategory(items, categoryFilter?.toLowerCase());
+    }
+
+    if (articlesCategories) {
+      setCategories(articlesCategories);
     }
 
     return items;

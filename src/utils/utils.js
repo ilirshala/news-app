@@ -93,3 +93,16 @@ export const filterByCategory = (items, category) => {
     item.category.toLowerCase().includes(category)
   );
 };
+
+export const extractUniqueCategoriesFromApis = (items) => {
+  const articleCategories = items.map((article) => ({
+    label: article?.category,
+    filterKey: article?.category,
+  }));
+
+  const uniqueCategories = articleCategories.filter(
+    (category, index, self) =>
+      index === self.findIndex((c) => c.filterKey === category.filterKey)
+  );
+  return uniqueCategories;
+};

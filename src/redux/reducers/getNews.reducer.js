@@ -7,6 +7,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
+  getArticlesSuccess: false,
   loading: false,
   news: [],
   filteredNews: [],
@@ -20,6 +21,7 @@ const getNewsReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+        getArticlesSuccess: false,
       };
     case GET_NEWS_SUCCESS: {
       let news = action.payload;
@@ -32,6 +34,7 @@ const getNewsReducer = (state = initialState, action) => {
         news,
         filteredNews: news,
         error: "",
+        getArticlesSuccess: true,
       };
     }
     case GET_NEWS_FAILURE:
@@ -41,6 +44,7 @@ const getNewsReducer = (state = initialState, action) => {
         news: [],
         filteredNews: [],
         error: action.payload,
+        getArticlesSuccess: false,
       };
     case FILTER_BY_CATEGORY:
       return {
