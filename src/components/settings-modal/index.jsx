@@ -14,7 +14,9 @@ const SettingsModal = ({ isOpen, onClose }) => {
   );
   const [authors, setAuthors] = useState([]);
   const [selectedAuthor, setSelectedAuthor] = useState("");
-  const { filteredNews } = useSelector((state) => state.getNews);
+  const { filteredNews, selectedCategory, selectedSource } = useSelector(
+    (state) => state.getNews
+  );
   const articleSources = ["NewsAPI", "NY Times", "Guardian"];
   useEffect(() => {
     const filteredBySources = filteredNews.filter((newsItem) =>
@@ -44,7 +46,13 @@ const SettingsModal = ({ isOpen, onClose }) => {
       author: selectedAuthor,
     };
     localStorage.setItem("newsAppSettings", JSON.stringify(settings));
-    dispatch(getNews("latest"));
+    dispatch(
+      getNews(
+        selectedCategory === "all" ? "latest" : selectedCategory,
+        selectedSource,
+        selectedCategory
+      )
+    );
     onClose();
   };
 

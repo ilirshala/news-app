@@ -11,7 +11,7 @@ import {
 import { sourceRequests } from "../../constants/newsApiRequests";
 import { formatArticles } from "../../utils/utils";
 
-export const getNews = (query, selectedSource) => {
+export const getNews = (query, selectedSource, selectedCategory) => {
   return async (dispatch) => {
     dispatch({ type: GET_NEWS });
 
@@ -27,9 +27,8 @@ export const getNews = (query, selectedSource) => {
       let articles = [];
 
       if (selectedSource?.toLowerCase() === "all") {
-        // Call all sources
         const requests = selectedSources.map((source) =>
-          sourceRequests(query)[source]()
+          sourceRequests(query, selectedCategory)[source]()
         );
 
         const responses = await axios.all(requests);
@@ -38,8 +37,9 @@ export const getNews = (query, selectedSource) => {
           return formatArticles[source.replace(" ", "")](response.data);
         });
       } else if (selectedSources.includes(selectedSource)) {
-        // Call the specific selected source
-        const response = await sourceRequests(query)[selectedSource]();
+        const response = await sourceRequests(query, selectedCategory)[
+          selectedSource
+        ]();
         articles = formatArticles[selectedSource.replace(" ", "")](
           response.data
         );

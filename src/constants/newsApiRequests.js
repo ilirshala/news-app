@@ -8,17 +8,25 @@ import {
   NYTIMES_API_KEY,
 } from "./constants";
 
-export const sourceRequests = (query) => ({
+export const sourceRequests = (query, category) => ({
   NewsAPI: () =>
     axios.get(
-      `${NEWS_API_BASE_URL}everything?q=${query}&apiKey=${NEWS_API_KEY}`
+      `${NEWS_API_BASE_URL}${
+        category === "all" ? "everything" : "top-headlines"
+      }?${
+        category !== "all" ? `category=${category}&` : ""
+      }q=${query}&apiKey=${NEWS_API_KEY}`
     ),
   Guardian: () =>
     axios.get(
-      `${GUARDIAN_BASE_URL}search?q=${query}&api-key=${GUARDIAN_API_KEY}`
+      `${GUARDIAN_BASE_URL}search?${
+        category !== "all" ? `section=${category}&` : ""
+      }q=${query}&api-key=${GUARDIAN_API_KEY}`
     ),
   "NY Times": () =>
     axios.get(
-      `${NYTIMES_BASE_URL}articlesearch.json?q=${query}&api-key=${NYTIMES_API_KEY}`
+      `${NYTIMES_BASE_URL}articlesearch.json?${
+        category !== "all" ? `fq=news_desk:("${category}")&` : ""
+      }q=${query}&api-key=${NYTIMES_API_KEY}`
     ),
 });

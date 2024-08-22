@@ -11,7 +11,8 @@ export const useGetArticles = () => {
     dispatch(
       getNews(
         selectedCategory === "all" ? "latest" : selectedCategory,
-        selectedSource
+        selectedSource,
+        selectedCategory
       )
     );
   }, [dispatch, selectedCategory, selectedSource]);
