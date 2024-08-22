@@ -51,44 +51,46 @@ const Articles = () => {
 
   useEffect(() => {
     const sourcesPerUser = settings?.sources;
+    if (sourcesPerUser) {
+      const sourceOptions = [
+        {
+          id: "all-articles",
+          label: "All",
+          source: "all",
+          onClick: () => console.log("All"),
+        },
+        ...sourcesPerUser?.map((source) => ({
+          id: source,
+          label: source,
+          source: source,
+          onClick: () => console.log("source", source),
+        })),
+      ];
 
-    const sourceOptions = [
-      {
-        id: "all-articles",
-        label: "All",
-        source: "all",
-        onClick: () => console.log("All"),
-      },
-      ...sourcesPerUser?.map((source) => ({
-        id: source,
-        label: source,
-        source: source,
-        onClick: () => console.log("source", source),
-      })),
-    ];
+      setFilterBySourceOptions((prevOptions) => {
+        const prevIds = prevOptions?.map((option) => option.id);
+        const newIds = sourceOptions.map((option) => option.id);
 
-    setFilterBySourceOptions((prevOptions) => {
-      const prevIds = prevOptions?.map((option) => option.id);
-      const newIds = sourceOptions.map((option) => option.id);
+        if (JSON.stringify(prevIds) !== JSON.stringify(newIds)) {
+          return sourceOptions;
+        }
 
-      if (JSON.stringify(prevIds) !== JSON.stringify(newIds)) {
-        return sourceOptions;
-      }
-
-      return prevOptions;
-    });
+        return prevOptions;
+      });
+    }
   }, [settings?.sources]);
 
   useEffect(() => {
-    if (settings?.author?.length > 0) {
-      const filteredByAuthor = filteredNews?.filter((article) =>
-        article?.author?.includes(settings.author)
+    const authors = settings?.authors;
+    if (authors?.length > 0) {
+      const filteredByAuthors = filteredNews.filter((article) =>
+        authors?.some((author) => article.author?.includes(author))
       );
-      setArticles(filteredByAuthor);
+      setArticles(filteredByAuthors);
     } else {
       setArticles(filteredNews);
     }
-  }, [filteredNews, settings.author]);
+  }, [filteredNews, settings.authors]);
 
   return (
     <div className="w-full m-auto mb-5">

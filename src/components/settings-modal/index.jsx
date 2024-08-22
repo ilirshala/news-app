@@ -7,17 +7,21 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const newsAppSettings = JSON.parse(localStorage.getItem("newsAppSettings"));
   const [selectedCategories, setSelectedCategories] = useState(
-    newsAppSettings?.categories
+    newsAppSettings?.categories || []
   );
   const [selectedSources, setSelectedSources] = useState(
-    newsAppSettings?.sources
+    newsAppSettings?.sources || []
   );
-  const [authors, setAuthors] = useState([]);
+  const [availableAuthors, setAvailableAuthors] = useState([]);
+  const [selectedAuthors, setSelectedAuthors] = useState(
+    newsAppSettings?.authors || []
+  );
   const [selectedAuthor, setSelectedAuthor] = useState("");
   const { filteredNews, selectedCategory, selectedSource } = useSelector(
     (state) => state.getNews
   );
   const articleSources = ["NewsAPI", "NY Times", "Guardian"];
+
   useEffect(() => {
     const filteredBySources = filteredNews.filter((newsItem) =>
       selectedSources.includes(newsItem.source)
@@ -26,7 +30,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     const authors = filteredBySources
       .map((newsItem) => newsItem?.author)
       .filter((author) => author !== "Unknown");
-    setAuthors(authors);
+    setAvailableAuthors([...new Set(authors)]);
   }, [filteredNews, selectedSources]);
 
   const toggleSelection = (selectedList, setSelectedList, value) => {
@@ -39,11 +43,24 @@ const SettingsModal = ({ isOpen, onClose }) => {
     });
   };
 
+  const handleAddAuthor = () => {
+    if (selectedAuthor && !selectedAuthors.includes(selectedAuthor)) {
+      setSelectedAuthors([...selectedAuthors, selectedAuthor]);
+      setSelectedAuthor("");
+    }
+  };
+
+  const handleRemoveAuthor = (authorToRemove) => {
+    setSelectedAuthors((prev) =>
+      prev.filter((author) => author !== authorToRemove)
+    );
+  };
+
   const handleSave = () => {
     const settings = {
       categories: selectedCategories,
       sources: selectedSources,
-      author: selectedAuthor,
+      authors: selectedAuthors,
     };
     localStorage.setItem("newsAppSettings", JSON.stringify(settings));
     dispatch(
@@ -120,20 +137,41 @@ const SettingsModal = ({ isOpen, onClose }) => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700">Author:</label>
+          <label className="block text-gray-700">Authors:</label>
           <select
             value={selectedAuthor}
             onChange={(e) => setSelectedAuthor(e.target.value)}
             className="mt-2 p-2 border border-gray-300 rounded w-full"
           >
             <option value="">Select an author</option>
-            <option value="">Default</option>
-            {authors?.map((author, index) => (
+            {availableAuthors?.map((author, index) => (
               <option key={index} value={author}>
                 {author}
               </option>
             ))}
           </select>
+          <button
+            onClick={handleAddAuthor}
+            className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Add Author
+          </button>
+          <div className="mt-2">
+            {selectedAuthors?.map((author, index) => (
+              <span
+                key={index}
+                className="inline-flex items-center bg-gray-200 text-gray-700 px-2 py-1 rounded mr-2"
+              >
+                {author}
+                <button
+                  onClick={() => handleRemoveAuthor(author)}
+                  className="ml-2 text-red-500"
+                >
+                  &times;
+                </button>
+              </span>
+            ))}
+          </div>
         </div>
 
         <div className="flex justify-end mt-4">
