@@ -12,7 +12,6 @@ const initialState = {
   filteredNews: [],
   error: "",
   selectedCategory: "home",
-  selectedSource: "All",
 };
 
 const getNewsReducer = (state = initialState, action) => {
