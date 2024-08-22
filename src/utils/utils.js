@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 export function formatTimestamp(timestamp) {
   const date = new Date(timestamp);
 
@@ -29,6 +30,7 @@ export const formatArticles = {
   NewsAPI: (response) => {
     return response.articles
       .map((article) => ({
+        id: article?.id || uuidv4(),
         title: article.title,
         category: article.source.name || "NewsAPI",
         source: "NewsAPI",
@@ -41,6 +43,7 @@ export const formatArticles = {
   },
   Guardian: (response) => {
     return response.response.results.map((article) => ({
+      id: article?.id || uuidv4(),
       title: article.webTitle,
       category: article.sectionName,
       source: "Guardian",
@@ -55,6 +58,7 @@ export const formatArticles = {
   },
   NYTimes: (response) => {
     return response.response.docs.map((article) => ({
+      id: article?.id || uuidv4(),
       title: article.headline.main,
       category: article.section_name || "General",
       source: "NY Times",

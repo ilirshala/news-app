@@ -106,10 +106,7 @@ const Articles = () => {
               <SkeletonCard key={index} />
             ))
           : articles?.map((article) => (
-              <ArticleCard
-                article={article}
-                key={article.id || article?.title}
-              />
+              <ArticleCard article={article} key={article.id} />
             ))}
       </div>
     </div>
