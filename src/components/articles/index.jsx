@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import ArticleCard from "../article-card";
 import { filterByDate } from "../../redux/actions/getNews.action";
 import ArticlesFilters from "./articles-filters";
+import SkeletonCard from "../skeleton-card";
 
 const Articles = () => {
   const dispatch = useDispatch();
-  const { filteredNews, selectedSource } = useSelector(
+  const { filteredNews, selectedSource, loading } = useSelector(
     (state) => state.getNews
   );
-  // const [selectedSource, setSelectedSource] = useState("All");
   const [selectedSort, setSelectedSort] = useState("Date");
   const [articles, setArticles] = useState(filteredNews);
   const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
@@ -100,9 +100,13 @@ const Articles = () => {
       />
 
       <div className="flex flex-wrap gap-0 md:gap-5 lg:gap-10 xl:gap-20 lg:w-[95%] xl:w-[85%] sm:w-[95%] mx-auto">
-        {articles?.map((article) => (
-          <ArticleCard article={article} key={article.id} />
-        ))}
+        {loading
+          ? Array.from({ length: 4 }).map((_, index) => (
+              <SkeletonCard key={index} />
+            ))
+          : articles?.map((article) => (
+              <ArticleCard article={article} key={article.id} />
+            ))}
       </div>
     </div>
   );
