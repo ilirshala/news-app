@@ -82,14 +82,18 @@ const getNewsReducer = (state = initialState, action) => {
       };
     case FILTER_BY_DATE:
       const dateType = action.payload?.toLowerCase();
-
-      if (!dateType) {
+      const selectedSource = state.selectedSource.toLowerCase();
+      if (!dateType && !selectedSource) {
         return {
           ...state,
           filteredNews: state.news,
         };
       }
-      const sortedNews = sortByDate(state.news, dateType);
+
+      const filtered = state.news.filter(
+        (article) => article?.source?.toLowerCase() === selectedSource
+      );
+      const sortedNews = sortByDate(filtered, dateType);
       return {
         ...state,
         filteredNews: sortedNews,
