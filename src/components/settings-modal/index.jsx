@@ -87,10 +87,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
       ></div>
 
       <div
-        className="bg-white p-6 rounded-lg shadow-lg w-1/2 z-10"
+        className="bg-white p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 rounded-lg shadow-lg w-11/12 sm:w-3/4 md:w-1/2 lg:w-1/3 z-10"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl font-semibold mb-4">Select Preferences</h2>
+        <h2 className="text-lg sm:text-xl font-semibold mb-4">
+          Select Preferences
+        </h2>
 
         <div className="mb-4">
           <label className="block text-gray-700">Categories:</label>
@@ -158,11 +160,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
           >
             Add Author
           </button>
-          <div className="mt-2">
+          <div className="mt-2 flex flex-wrap">
             {selectedAuthors?.map((author, index) => (
               <span
                 key={index}
-                className="inline-flex items-center bg-gray-200 text-gray-700 px-2 py-1 rounded mr-2"
+                className="inline-flex items-center bg-gray-200 text-gray-700 px-2 py-1 rounded mr-2 mb-2"
               >
                 {author}
                 <button
@@ -176,10 +178,10 @@ const SettingsModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        <div className="flex justify-end mt-4">
+        <div className="flex flex-col sm:flex-row justify-end mt-4">
           <button
             onClick={handleSave}
-            className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+            className="bg-blue-500 text-white px-4 py-2 rounded mb-2 sm:mb-0 sm:mr-2"
           >
             Save
           </button>
