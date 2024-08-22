@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import {
-  filterArticles,
-  filterByDate,
-} from "../../redux/actions/getNews.action";
+import { useSearchParams } from "react-router-dom";
 
 const SearchInput = ({ isScrolled }) => {
-  const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState("");
   const handleFilterSearch = () => {
-    dispatch(filterArticles(searchValue));
-    dispatch(filterByDate("Date"));
+    setSearchParams({ s: searchValue });
   };
 
   const handleSearchWithEnter = (e) => {

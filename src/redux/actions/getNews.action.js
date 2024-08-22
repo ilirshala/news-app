@@ -1,9 +1,6 @@
 import axios from "axios";
 import {
-  FILTER_ARTICLES,
   FILTER_BY_CATEGORY,
-  FILTER_BY_DATE,
-  FILTER_BY_SOURCE,
   GET_NEWS,
   GET_NEWS_FAILURE,
   GET_NEWS_SUCCESS,
@@ -54,29 +51,9 @@ export const getNews = (query, selectedSource, selectedCategory) => {
   };
 };
 
-export const filterArticles = (searchTerm) => {
-  return {
-    type: FILTER_ARTICLES,
-    payload: searchTerm,
-  };
-};
 export const filterByCategory = (category) => {
   return {
     type: FILTER_BY_CATEGORY,
     payload: category,
-  };
-};
-
-export const filterBySource = (source) => {
-  return {
-    type: FILTER_BY_SOURCE,
-    payload: source,
-  };
-};
-
-export const filterByDate = (type) => {
-  return {
-    type: FILTER_BY_DATE,
-    payload: type,
   };
 };

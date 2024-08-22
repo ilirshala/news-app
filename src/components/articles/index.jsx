@@ -1,44 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ArticleCard from "../article-card";
-import { filterByDate } from "../../redux/actions/getNews.action";
-import ArticlesFilters from "./articles-filters";
 import SkeletonCard from "../skeleton-card";
+import { sortByDate } from "../../utils/utils";
+import ArticlesFilterDropdown from "../articles-filter-dropdown";
 
-const Articles = () => {
-  const dispatch = useDispatch();
-  const { filteredNews, selectedSource, loading, dateType } = useSelector(
-    (state) => state.getNews
-  );
+const Articles = ({ searchParams }) => {
+  const { filteredNews, loading } = useSelector((state) => state.getNews);
   const [articles, setArticles] = useState(filteredNews);
+  const [dateSelectLabel, setDateSelectLabel] = useState("Date");
+  const [sourceSelectLabel, setSourceSelectLabel] = useState("Source");
   const [filterBySourceOptions, setFilterBySourceOptions] = useState([]);
-
-  console.log(articles, "articles");
-
+  const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
   const sortByDateOptions = [
-    {
-      id: "default",
-      label: "Default",
-      option: "",
-      onClick: () => {
-        dispatch(filterByDate("Date"));
-      },
-    },
     {
       id: "newest",
       label: "Newest",
       option: "Newest",
-      onClick: () => {
-        dispatch(filterByDate("Newest"));
-      },
+      filterKey: "newest",
     },
     {
       id: "oldest",
       label: "Oldest",
       option: "Oldest",
-      onClick: () => {
-        dispatch(filterByDate("Oldest"));
-      },
+      filterKey: "oldest",
     },
   ];
 
@@ -56,8 +41,6 @@ const Articles = () => {
     }
   }, [filteredNews]);
 
-  const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
-
   useEffect(() => {
     const sourcesPerUser = settings?.sources;
     if (sourcesPerUser) {
@@ -66,12 +49,14 @@ const Articles = () => {
           id: "all-articles",
           label: "All",
           source: "all",
+          filterKey: "all",
           onClick: () => console.log("All"),
         },
         ...sourcesPerUser?.map((source) => ({
           id: source,
           label: source,
           source: source,
+          filterKey: source,
           onClick: () => console.log("source", source),
         })),
       ];
@@ -89,14 +74,52 @@ const Articles = () => {
     }
   }, [settings?.sources]);
 
+  useEffect(() => {
+    if (searchParams) {
+      const filterBySearch = filteredNews?.filter((article) =>
+        article.title?.toLowerCase()?.includes(searchParams)
+      );
+      if (filterBySearch) {
+        setArticles(filterBySearch);
+      }
+    }
+  }, [filteredNews, searchParams]);
+
+  const [filteredItems, setFilteredItems] = useState([]);
+
+  const handleSortByDate = (filterKey) => {
+    const articlesToSort = filteredItems.length > 0 ? filteredItems : articles;
+    const sortedItemsByDate = sortByDate(articlesToSort, filterKey);
+    setDateSelectLabel(filterKey?.toUpperCase());
+    if (filteredItems?.length > 0) {
+      setFilteredItems(sortedItemsByDate);
+    } else {
+      setArticles(sortedItemsByDate);
+    }
+  };
+
+  const handleSortBySource = (filterKey) => {
+    setSourceSelectLabel(filterKey?.toUpperCase());
+    const filterItems = articles.filter(
+      (article) => article?.source.toLowerCase() === filterKey?.toLowerCase()
+    );
+    if (filterItems) setFilteredItems(filterItems);
+  };
+
   return (
     <div className="w-full m-auto mb-5">
-      <ArticlesFilters
-        sortByDateOptions={sortByDateOptions}
-        selectedSort={dateType}
-        filterBySourceOptions={filterBySourceOptions}
-        selectedSource={selectedSource}
-      />
+      <div className="lg:w-3/4 md:w-11/12 m-auto flex gap-3 justify-end relative mb-6">
+        <ArticlesFilterDropdown
+          items={sortByDateOptions}
+          title={dateSelectLabel}
+          handleFilterFunction={handleSortByDate}
+        />
+        <ArticlesFilterDropdown
+          items={filterBySourceOptions}
+          title={sourceSelectLabel}
+          handleFilterFunction={handleSortBySource}
+        />
+      </div>
 
       <div className="flex flex-wrap gap-0 md:gap-5 lg:gap-10 xl:gap-20 lg:w-[95%] xl:w-[85%] sm:w-[95%] mx-auto">
         {loading ? (
@@ -104,9 +127,15 @@ const Articles = () => {
             <SkeletonCard key={index} />
           ))
         ) : articles?.length > 0 ? (
-          articles.map((article) => (
-            <ArticleCard article={article} key={article.id} />
-          ))
+          filteredItems.length > 0 ? (
+            filteredItems.map((article) => (
+              <ArticleCard article={article} key={article.id} />
+            ))
+          ) : (
+            articles.map((article) => (
+              <ArticleCard article={article} key={article.id} />
+            ))
+          )
         ) : (
           <div className="w-full text-center py-10 text-gray-500">
             No articles available at the moment. Please check back later.

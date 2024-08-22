@@ -1,18 +1,9 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { filterBySource } from "../../redux/actions/getNews.action";
 
-const ArticlesFilterDropdown = ({ title, items }) => {
+const ArticlesFilterDropdown = ({ items, title, handleFilterFunction }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const dispatch = useDispatch();
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleDropdownItemClick = (item) => {
-    dispatch(filterBySource(item.source));
-    item?.onClick();
-    toggleDropdown();
   };
 
   return (
@@ -54,7 +45,10 @@ const ArticlesFilterDropdown = ({ title, items }) => {
               <li
                 key={item?.id || item?.label}
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 cursor-pointer"
-                onClick={() => handleDropdownItemClick(item)}
+                onClick={() => {
+                  toggleDropdown();
+                  handleFilterFunction(item?.filterKey);
+                }}
               >
                 {item.label}
               </li>

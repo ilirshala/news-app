@@ -69,3 +69,9 @@ export const formatArticles = {
     }));
   },
 };
+
+export const filterBySource = (items, source) => {
+  return items?.filter(
+    (item) => item.source.toLowerCase() === source?.toLowerCase()
+  );
+};
