@@ -5,22 +5,24 @@ import { articleCategories } from "../../constants/constants";
 
 const SettingsModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
-  const newsAppSettings = JSON.parse(localStorage.getItem("newsAppSettings"));
-  const [selectedCategories, setSelectedCategories] = useState(
-    newsAppSettings?.categories || []
-  );
-  const [selectedSources, setSelectedSources] = useState(
-    newsAppSettings?.sources || []
-  );
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedSources, setSelectedSources] = useState([]);
   const [availableAuthors, setAvailableAuthors] = useState([]);
-  const [selectedAuthors, setSelectedAuthors] = useState(
-    newsAppSettings?.authors || []
-  );
+  const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedAuthor, setSelectedAuthor] = useState("");
   const { filteredNews, selectedCategory, selectedSource } = useSelector(
     (state) => state.getNews
   );
   const articleSources = ["NewsAPI", "NY Times", "Guardian"];
+
+  useEffect(() => {
+    const newsAppSettings = JSON.parse(localStorage.getItem("newsAppSettings"));
+    if (newsAppSettings) {
+      setSelectedCategories(newsAppSettings?.categories);
+      setSelectedSources(newsAppSettings?.sources);
+      setSelectedAuthors(newsAppSettings?.authors);
+    }
+  }, []);
 
   useEffect(() => {
     const filteredBySources = filteredNews.filter((newsItem) =>
