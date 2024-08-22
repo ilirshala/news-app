@@ -38,7 +38,9 @@ const Header = ({ onClickSettings }) => {
           newsApp
         </div>
         <div className="flex items-center space-x-4 my-4">
-          <SearchInput isScrolled={isScrolled || location.pathname !== "/"} />
+          <div className="hidden md:block">
+            <SearchInput isScrolled={isScrolled || location.pathname !== "/"} />
+          </div>
 
           <FiSettings
             className={`text-2xl cursor-pointer ${
@@ -49,6 +51,9 @@ const Header = ({ onClickSettings }) => {
             onClick={onClickSettings}
           />
         </div>
+      </div>
+      <div className="block md:hidden">
+        <SearchInput isScrolled={isScrolled || location.pathname !== "/"} />
       </div>
       <nav
         className={`w-full overflow-x-auto mt-2 py-2 ${

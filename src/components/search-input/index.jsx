@@ -29,7 +29,7 @@ const SearchInput = ({ isScrolled }) => {
       <input
         type="text"
         placeholder="Search..."
-        className={`p-2 w-64 bg-transparent outline-none ${
+        className={`p-1 w-64 bg-transparent outline-none ${
           isScrolled ? "text-black" : "text-white"
         }`}
         value={searchValue}
