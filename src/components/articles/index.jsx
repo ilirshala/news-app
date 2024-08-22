@@ -7,12 +7,13 @@ import SkeletonCard from "../skeleton-card";
 
 const Articles = () => {
   const dispatch = useDispatch();
-  const { filteredNews, selectedSource, loading } = useSelector(
+  const { filteredNews, selectedSource, loading, dateType } = useSelector(
     (state) => state.getNews
   );
-  const [selectedSort, setSelectedSort] = useState("Date");
   const [articles, setArticles] = useState(filteredNews);
   const [filterBySourceOptions, setFilterBySourceOptions] = useState([]);
+
+  console.log(articles, "articles");
 
   const sortByDateOptions = [
     {
@@ -20,8 +21,7 @@ const Articles = () => {
       label: "Default",
       option: "",
       onClick: () => {
-        setSelectedSort("Default");
-        dispatch(filterByDate(""));
+        dispatch(filterByDate("Date"));
       },
     },
     {
@@ -29,7 +29,6 @@ const Articles = () => {
       label: "Newest",
       option: "Newest",
       onClick: () => {
-        setSelectedSort("Newest");
         dispatch(filterByDate("Newest"));
       },
     },
@@ -38,7 +37,6 @@ const Articles = () => {
       label: "Oldest",
       option: "Oldest",
       onClick: () => {
-        setSelectedSort("Oldest");
         dispatch(filterByDate("Oldest"));
       },
     },
@@ -95,19 +93,25 @@ const Articles = () => {
     <div className="w-full m-auto mb-5">
       <ArticlesFilters
         sortByDateOptions={sortByDateOptions}
-        selectedSort={selectedSort}
+        selectedSort={dateType}
         filterBySourceOptions={filterBySourceOptions}
         selectedSource={selectedSource}
       />
 
       <div className="flex flex-wrap gap-0 md:gap-5 lg:gap-10 xl:gap-20 lg:w-[95%] xl:w-[85%] sm:w-[95%] mx-auto">
-        {loading
-          ? Array.from({ length: 4 }).map((_, index) => (
-              <SkeletonCard key={index} />
-            ))
-          : articles?.map((article) => (
-              <ArticleCard article={article} key={article.id} />
-            ))}
+        {loading ? (
+          Array.from({ length: 4 }).map((_, index) => (
+            <SkeletonCard key={index} />
+          ))
+        ) : articles?.length > 0 ? (
+          articles.map((article) => (
+            <ArticleCard article={article} key={article.id} />
+          ))
+        ) : (
+          <div className="w-full text-center py-10 text-gray-500">
+            No articles available at the moment. Please check back later.
+          </div>
+        )}
       </div>
     </div>
   );

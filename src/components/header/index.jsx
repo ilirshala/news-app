@@ -6,19 +6,14 @@ import {
   filterByCategory,
 } from "../../redux/actions/getNews.action";
 import { useScrollHook } from "../../hooks/useScrollHook";
+import { FaSearch } from "react-icons/fa";
+import SearchInput from "../search-input";
 
 const Header = ({ onClickSettings }) => {
   const dispatch = useDispatch();
   const { selectedCategory } = useSelector((state) => state.getNews);
   const { isScrolled } = useScrollHook();
   const newsAppSettings = JSON.parse(localStorage.getItem("newsAppSettings"));
-
-  console.log(selectedCategory, "selectedCategory");
-
-  const handleFilterSearch = (e) => {
-    const searchTerm = e.target.value;
-    dispatch(filterArticles(searchTerm));
-  };
 
   const handleCategoryClick = (category) => {
     console.log(category, "category");
@@ -40,14 +35,8 @@ const Header = ({ onClickSettings }) => {
           newsApp
         </div>
         <div className="flex items-center space-x-4 my-4 ">
-          <input
-            type="text"
-            placeholder="Search..."
-            className={`p-2 w-64 border rounded-md focus:outline-none focus:ring focus:border-blue-300 bg-transparent ${
-              isScrolled ? "text-black" : "text-white"
-            }`}
-            onChange={handleFilterSearch}
-          />
+          <SearchInput isScrolled={isScrolled} />
+
           <FiSettings
             className={`text-2xl cursor-pointer ${
               isScrolled ? "text-black" : "text-white"

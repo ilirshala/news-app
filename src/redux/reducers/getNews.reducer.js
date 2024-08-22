@@ -16,7 +16,8 @@ const initialState = {
   error: "",
   selectedCategory: "all",
   selectedSource: "All",
-  dateType: "",
+  dateType: "Date",
+  searchTerm: "",
 };
 
 const getNewsReducer = (state = initialState, action) => {
@@ -57,6 +58,7 @@ const getNewsReducer = (state = initialState, action) => {
       return {
         ...state,
         filteredNews: filteredArticles,
+        searchTerm: searchTerm,
       };
     case FILTER_BY_CATEGORY:
       return {
@@ -83,6 +85,7 @@ const getNewsReducer = (state = initialState, action) => {
     case FILTER_BY_DATE:
       const dateType = action.payload?.toLowerCase();
       const selectedSource = state.selectedSource.toLowerCase();
+      const searchValue = state.searchTerm.toLowerCase();
       if (!dateType && !selectedSource) {
         return {
           ...state,
@@ -94,8 +97,16 @@ const getNewsReducer = (state = initialState, action) => {
         (article) => article?.source?.toLowerCase() === selectedSource
       );
 
+      const filterBySearchValue = state.news.filter((article) =>
+        article.title.toLowerCase().includes(searchValue)
+      );
+
       const sortedNews = sortByDate(
-        selectedSource !== "all" ? filtered : state.news,
+        selectedSource !== "all"
+          ? filtered
+          : searchValue.length > 0
+          ? filterBySearchValue
+          : state.news,
         dateType
       );
       return {
