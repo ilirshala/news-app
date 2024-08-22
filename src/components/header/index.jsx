@@ -14,17 +14,8 @@ const Header = ({ onClickSettings }) => {
   const { isScrolled } = useScrollHook();
   const newsAppSettings = JSON.parse(localStorage.getItem("newsAppSettings"));
 
-  const isHomeSelected =
-    location.pathname === "/" || selectedCategory.toLowerCase() === "home";
-
   const handleCategoryClick = (category) => {
-    if (category === "Home") {
-      navigate(`/`);
-      dispatch(filterByCategory("home"));
-    } else {
-      navigate(`/${category.toLowerCase()}`);
-      dispatch(filterByCategory(category.toLowerCase()));
-    }
+    dispatch(filterByCategory(category.toLowerCase()));
   };
 
   return (
@@ -72,25 +63,14 @@ const Header = ({ onClickSettings }) => {
                 <button
                   onClick={() => handleCategoryClick(category)}
                   className={`p-2 rounded-md transition-all duration-300 ${
-                    isScrolled || location.pathname !== "/"
-                      ? "text-black"
-                      : "text-white"
+                    isScrolled ? "text-black" : "text-white"
                   } ${
-                    isHomeSelected && category === "Home"
-                      ? isScrolled || location.pathname !== "/"
-                        ? "bg-gray-200"
-                        : "bg-gray-700"
-                      : selectedCategory.toLowerCase() ===
-                        category.toLowerCase()
-                      ? isScrolled || location.pathname !== "/"
+                    selectedCategory.toLowerCase() === category.toLowerCase()
+                      ? isScrolled
                         ? "bg-gray-200"
                         : "bg-gray-700"
                       : ""
-                  } ${
-                    isScrolled || location.pathname !== "/"
-                      ? "hover:bg-gray-200"
-                      : "hover:bg-gray-700"
-                  }`}
+                  } ${isScrolled ? "hover:bg-gray-200" : "hover:bg-gray-700"}`}
                 >
                   {category}
                 </button>

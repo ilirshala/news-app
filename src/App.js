@@ -3,10 +3,7 @@ import SettingsModal from "./components/settings-modal";
 import { useNewsAppSettings } from "./hooks/useNewsAppSettingsHook";
 import { useGetArticles } from "./hooks/useGetArticlesHook";
 import { useSettingsModal } from "./hooks/useSettingsModalHook";
-import { Route, Routes } from "react-router-dom";
 import Home from "./pages/home";
-import Category from "./pages/category";
-import Search from "./pages/search";
 
 function App() {
   const { isOpen, openModal, closeModal } = useSettingsModal();
@@ -21,11 +18,7 @@ function App() {
     <div className="w-full">
       <SettingsModal isOpen={isOpen} onClose={closeModal} />
       <Header onClickSettings={openModal} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path=":category" element={<Category />} />
-        <Route path="/search" element={<Search />} />
-      </Routes>
+      <Home />
     </div>
   );
 }

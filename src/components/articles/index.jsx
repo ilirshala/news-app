@@ -73,19 +73,20 @@ const Articles = ({ searchParams }) => {
       });
     }
   }, [settings?.sources]);
+  const [filteredItems, setFilteredItems] = useState([]);
 
   useEffect(() => {
     if (searchParams) {
       const filterBySearch = filteredNews?.filter((article) =>
         article.title?.toLowerCase()?.includes(searchParams)
       );
-      if (filterBySearch) {
-        setArticles(filterBySearch);
+      if (filterBySearch && searchParams?.length > 0) {
+        setFilteredItems(filterBySearch);
       }
+    } else {
+      setFilteredItems(filteredNews);
     }
   }, [filteredNews, searchParams]);
-
-  const [filteredItems, setFilteredItems] = useState([]);
 
   const handleSortByDate = (filterKey) => {
     const articlesToSort = filteredItems.length > 0 ? filteredItems : articles;

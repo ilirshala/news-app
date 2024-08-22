@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const SearchInput = ({ isScrolled }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchValue, setSearchValue] = useState("");
-  const navigate = useNavigate();
-  const handleFilterSearch = () => {
-    navigate(`/search?s=${encodeURIComponent(searchValue)}`);
+  const handleFilterSearch = (e) => {
+    setSearchValue(e.target.value);
+    if (e.target.value.length > 0) {
+      setSearchParams({ s: e.target.value });
+    } else {
+      setSearchParams({});
+    }
   };
 
   const handleSearchWithEnter = (e) => {
@@ -29,7 +33,7 @@ const SearchInput = ({ isScrolled }) => {
           isScrolled ? "text-black" : "text-white"
         }`}
         value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
+        onChange={(e) => handleFilterSearch(e)}
         onKeyDown={handleSearchWithEnter}
       />
       <FaSearch
