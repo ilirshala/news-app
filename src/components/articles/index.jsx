@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArticleCard from "../article-card";
-import ArticlesFilterDropdown from "../articles-filter-dropdown";
 import { filterByDate } from "../../redux/actions/getNews.action";
+import ArticlesFilters from "./articles-filters";
 
 const Articles = () => {
   const dispatch = useDispatch();
@@ -60,7 +60,7 @@ const Articles = () => {
     {
       id: "ny-times",
       label: "New York Times",
-      source: "NYTimes",
+      source: "NY Times",
       onClick: () => setSelectedSource("New York Times"),
     },
   ];
@@ -79,16 +79,12 @@ const Articles = () => {
 
   return (
     <div className="w-full m-auto mb-5">
-      <div className="lg:w-3/4 md:w-11/12 m-auto flex gap-3 justify-end relative mb-6">
-        <ArticlesFilterDropdown
-          items={sortByDateOptions}
-          title={selectedSort}
-        />
-        <ArticlesFilterDropdown
-          items={filterBySourceOptions}
-          title={selectedSource}
-        />
-      </div>
+      <ArticlesFilters
+        sortByDateOptions={sortByDateOptions}
+        selectedSort={selectedSort}
+        filterBySourceOptions={filterBySourceOptions}
+        selectedSource={selectedSource}
+      />
 
       <div className="flex flex-wrap gap-0 md:gap-5 lg:gap-10 xl:gap-20 lg:w-[95%] xl:w-[85%] sm:w-[95%] mx-auto">
         {articles?.map((article) => (
