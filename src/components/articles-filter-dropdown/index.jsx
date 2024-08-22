@@ -50,9 +50,9 @@ const ArticlesFilterDropdown = ({ title, items }) => {
             className="text-sm text-gray-700 dark:text-gray-200"
             aria-labelledby="dropdownDefaultButton"
           >
-            {items?.map((item, index) => (
+            {items.map((item) => (
               <li
-                key={index}
+                key={item?.id || item?.label}
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 cursor-pointer"
                 onClick={() => handleDropdownItemClick(item)}
               >

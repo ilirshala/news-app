@@ -12,12 +12,7 @@ const Articles = () => {
   );
   const [selectedSort, setSelectedSort] = useState("Date");
   const [articles, setArticles] = useState(filteredNews);
-  const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
-  const [filterBySourceOptions, setFilterBySourceOptions] = useState();
-
-  useEffect(() => {
-    console.log(selectedSource, "selectedSource");
-  }, [selectedSource]);
+  const [filterBySourceOptions, setFilterBySourceOptions] = useState([]);
 
   const sortByDateOptions = [
     {
@@ -50,6 +45,22 @@ const Articles = () => {
   ];
 
   useEffect(() => {
+    const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
+
+    const authors = settings?.authors;
+    if (authors?.length > 0) {
+      const filteredByAuthors = filteredNews.filter((article) =>
+        authors?.some((author) => article.author?.includes(author))
+      );
+      setArticles(filteredByAuthors);
+    } else {
+      setArticles(filteredNews);
+    }
+  }, [filteredNews]);
+
+  const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
+
+  useEffect(() => {
     const sourcesPerUser = settings?.sources;
     if (sourcesPerUser) {
       const sourceOptions = [
@@ -80,18 +91,6 @@ const Articles = () => {
     }
   }, [settings?.sources]);
 
-  useEffect(() => {
-    const authors = settings?.authors;
-    if (authors?.length > 0) {
-      const filteredByAuthors = filteredNews.filter((article) =>
-        authors?.some((author) => article.author?.includes(author))
-      );
-      setArticles(filteredByAuthors);
-    } else {
-      setArticles(filteredNews);
-    }
-  }, [filteredNews, settings.authors]);
-
   return (
     <div className="w-full m-auto mb-5">
       <ArticlesFilters
@@ -107,7 +106,10 @@ const Articles = () => {
               <SkeletonCard key={index} />
             ))
           : articles?.map((article) => (
-              <ArticleCard article={article} key={article.id} />
+              <ArticleCard
+                article={article}
+                key={article.id || article?.title}
+              />
             ))}
       </div>
     </div>

@@ -22,21 +22,22 @@ export const sortByDate = (items, dateType) => {
       return new Date(dateA) - new Date(dateB);
     }
   });
-  console.log(sortedNews, "sortedNews");
   return sortedNews;
 };
 
 export const formatArticles = {
   NewsAPI: (response) => {
-    return response.articles.map((article) => ({
-      title: article.title,
-      category: article.source.name || "NewsAPI",
-      source: "NewsAPI",
-      url: article.url,
-      description: article.description,
-      publishedAt: article.publishedAt,
-      author: article.author || "Unknown",
-    }));
+    return response.articles
+      .map((article) => ({
+        title: article.title,
+        category: article.source.name || "NewsAPI",
+        source: "NewsAPI",
+        url: article.url,
+        description: article.description,
+        publishedAt: article.publishedAt,
+        author: article.author || "Unknown",
+      }))
+      .filter((article) => article?.title !== "[Removed]");
   },
   Guardian: (response) => {
     return response.response.results.map((article) => ({
