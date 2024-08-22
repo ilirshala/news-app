@@ -12,9 +12,8 @@ const ArticleCard = ({ article }) => {
         </p>
         <p className="text-xs font-bold text-gray-500">{article?.author}</p>
       </div>
-      <h2 className="text-md font-bold">
-        {article?.title || article?.webTitle}
-      </h2>
+      <p className="text-xs font-semibold text-gray-400">{article?.category}</p>
+      <h2 className="text-md font-bold">{article?.title}</h2>
       <p className="text-sm mt-2 text-gray-600">{article?.description}</p>
       <div className="mt-auto w-full flex items-center justify-between">
         <h3 className="cursor-pointer text-xs font-bold text-gray-500 flex items-center gap-3">
