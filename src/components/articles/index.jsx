@@ -6,15 +6,24 @@ import ArticlesFilters from "./articles-filters";
 
 const Articles = () => {
   const dispatch = useDispatch();
-  const { filteredNews } = useSelector((state) => state.getNews);
-  const [selectedSource, setSelectedSource] = useState("All");
+  const { filteredNews, selectedSource } = useSelector(
+    (state) => state.getNews
+  );
+  // const [selectedSource, setSelectedSource] = useState("All");
   const [selectedSort, setSelectedSort] = useState("Date");
   const [articles, setArticles] = useState(filteredNews);
+  const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
+  const [filterBySourceOptions, setFilterBySourceOptions] = useState();
+
+  useEffect(() => {
+    console.log(selectedSource, "selectedSource");
+  }, [selectedSource]);
 
   const sortByDateOptions = [
     {
       id: "default",
       label: "Default",
+      option: "",
       onClick: () => {
         setSelectedSort("Default");
         dispatch(filterByDate(""));
@@ -23,6 +32,7 @@ const Articles = () => {
     {
       id: "newest",
       label: "Newest",
+      option: "Newest",
       onClick: () => {
         setSelectedSort("Newest");
         dispatch(filterByDate("Newest"));
@@ -31,6 +41,7 @@ const Articles = () => {
     {
       id: "oldest",
       label: "Oldest",
+      option: "Oldest",
       onClick: () => {
         setSelectedSort("Oldest");
         dispatch(filterByDate("Oldest"));
@@ -38,35 +49,37 @@ const Articles = () => {
     },
   ];
 
-  const filterBySourceOptions = [
-    {
-      id: "all-articles",
-      label: "All",
-      source: "",
-      onClick: () => setSelectedSource("All"),
-    },
-    {
-      id: "news-api-org",
-      label: "NewsAPI.org",
-      source: "NewsAPI",
-      onClick: () => setSelectedSource("NewsAPI.org"),
-    },
-    {
-      id: "guardian",
-      label: "Guardian API",
-      source: "Guardian",
-      onClick: () => setSelectedSource("Guardian API"),
-    },
-    {
-      id: "ny-times",
-      label: "New York Times",
-      source: "NY Times",
-      onClick: () => setSelectedSource("New York Times"),
-    },
-  ];
+  useEffect(() => {
+    const sourcesPerUser = settings?.sources;
+
+    const sourceOptions = [
+      {
+        id: "all-articles",
+        label: "All",
+        source: "all",
+        onClick: () => console.log("All"),
+      },
+      ...sourcesPerUser?.map((source) => ({
+        id: source,
+        label: source,
+        source: source,
+        onClick: () => console.log("source", source),
+      })),
+    ];
+
+    setFilterBySourceOptions((prevOptions) => {
+      const prevIds = prevOptions?.map((option) => option.id);
+      const newIds = sourceOptions.map((option) => option.id);
+
+      if (JSON.stringify(prevIds) !== JSON.stringify(newIds)) {
+        return sourceOptions;
+      }
+
+      return prevOptions;
+    });
+  }, [settings?.sources]);
 
   useEffect(() => {
-    const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
     if (settings?.author?.length > 0) {
       const filteredByAuthor = filteredNews?.filter((article) =>
         article?.author?.includes(settings.author)
@@ -75,7 +88,7 @@ const Articles = () => {
     } else {
       setArticles(filteredNews);
     }
-  }, [filteredNews]);
+  }, [filteredNews, settings.author]);
 
   return (
     <div className="w-full m-auto mb-5">

@@ -15,6 +15,7 @@ const initialState = {
   filteredNews: [],
   error: "",
   selectedCategory: "all",
+  selectedSource: "All",
   dateType: "",
 };
 
@@ -64,7 +65,8 @@ const getNewsReducer = (state = initialState, action) => {
       };
     case FILTER_BY_SOURCE:
       const source = action.payload?.toLowerCase();
-      if (!source) {
+
+      if (!source || source === "all") {
         return {
           ...state,
           filteredNews: state.news,
@@ -76,6 +78,7 @@ const getNewsReducer = (state = initialState, action) => {
       return {
         ...state,
         filteredNews: filteredBySource,
+        selectedSource: action.payload,
       };
     case FILTER_BY_DATE:
       const dateType = action.payload?.toLowerCase();
