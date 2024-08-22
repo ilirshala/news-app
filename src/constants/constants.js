@@ -19,11 +19,11 @@ export const sortByDateOptions = [
   {
     id: "newest",
     label: "Newest",
-    filterKey: "newest",
+    filterKey: "Newest",
   },
   {
     id: "oldest",
     label: "Oldest",
-    filterKey: "oldest",
+    filterKey: "Oldest",
   },
 ];

@@ -33,7 +33,7 @@ export const formatArticles = {
         id: article?.id || uuidv4(),
         title: article.title,
         category: article.category || "NewsAPI",
-        source: "NewsAPI",
+        source: article.source.name || "NewsApi",
         url: article.url,
         description: article.description,
         publishedAt: article.publishedAt,
@@ -61,7 +61,7 @@ export const formatArticles = {
       id: article?.id || uuidv4(),
       title: article.headline.main,
       category: article.section_name || "General",
-      source: "NY Times",
+      source: article?.source || "NY Times",
       url: article.web_url,
       description: article.snippet,
       publishedAt: article.pub_date,
@@ -105,4 +105,17 @@ export const extractUniqueCategoriesFromApis = (items) => {
       index === self.findIndex((c) => c.filterKey === category.filterKey)
   );
   return uniqueCategories;
+};
+
+export const extractUniqueSourcesFromApis = (items) => {
+  const sources = items.map((article) => ({
+    label: article?.source,
+    filterKey: article?.source,
+  }));
+
+  const uniqueSources = sources.filter(
+    (source, index, self) =>
+      index === self.findIndex((s) => s.filterKey === source.filterKey)
+  );
+  return uniqueSources;
 };

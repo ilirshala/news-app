@@ -4,6 +4,7 @@ import ArticleCard from "../article-card";
 import SkeletonCard from "../skeleton-card";
 import {
   extractUniqueCategoriesFromApis,
+  extractUniqueSourcesFromApis,
   filterByAuthors,
   filterByCategory,
   filterBySearch,
@@ -18,16 +19,15 @@ const Articles = ({ searchParams }) => {
     (state) => state.getNews
   );
   const [dateFilter, setDateFilter] = useState("Date");
-  const [sourceFilter, setSourceFilter] = useState("Source");
-  const [categoryFilter, setCategoryFilter] = useState("General");
+  const [sourceFilter, setSourceFilter] = useState("All");
+  const [categoryFilter, setCategoryFilter] = useState("Default");
   const [categories, setCategories] = useState([]);
   const [filterBySourceOptions, setFilterBySourceOptions] = useState([]);
-  const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
 
   const resetFilters = () => {
     setDateFilter("Date");
-    setSourceFilter("Source");
-    setCategoryFilter("General");
+    setSourceFilter("All");
+    setCategoryFilter("Default");
   };
 
   useEffect(() => {
@@ -36,51 +36,16 @@ const Articles = ({ searchParams }) => {
     }
   }, [getArticlesSuccess]);
 
-  useEffect(() => {
-    const sourcesPerUser = settings?.sources;
-    if (sourcesPerUser) {
-      const sourceOptions = [
-        {
-          id: "all-articles",
-          label: "All",
-          source: "all",
-          filterKey: "all",
-          onClick: () => console.log("All"),
-        },
-        ...sourcesPerUser?.map((source) => ({
-          id: source,
-          label: source,
-          source: source,
-          filterKey: source,
-          onClick: () => console.log("source", source),
-        })),
-      ];
-
-      console.log(sourcesPerUser, "sourcesPerUser");
-
-      setFilterBySourceOptions((prevOptions) => {
-        const prevIds = prevOptions?.map((option) => option.id);
-        const newIds = sourceOptions.map((option) => option.id);
-
-        if (JSON.stringify(prevIds) !== JSON.stringify(newIds)) {
-          return sourceOptions;
-        }
-
-        return prevOptions;
-      });
-    }
-  }, [settings?.sources]);
-
   const handleSortByDate = (filterKey) => {
-    setDateFilter(filterKey?.toUpperCase());
+    setDateFilter(filterKey);
   };
 
   const handleSortBySource = (filterKey) => {
-    setSourceFilter(filterKey?.toUpperCase());
+    setSourceFilter(filterKey);
   };
 
   const handleSortByCategory = (filterKey) => {
-    setCategoryFilter(filterKey?.toUpperCase());
+    setCategoryFilter(filterKey);
   };
 
   const filteredItems = useMemo(() => {
@@ -88,6 +53,7 @@ const Articles = ({ searchParams }) => {
     const authors = settings?.authors;
     let items = filteredNews;
     const articlesCategories = extractUniqueCategoriesFromApis(items);
+    const apiSources = extractUniqueSourcesFromApis(items);
 
     // Filter by search
     if (searchParams) {
@@ -101,23 +67,34 @@ const Articles = ({ searchParams }) => {
     if (dateFilter !== "Date") {
       items = sortByDate(items, dateFilter.toLowerCase());
     }
-    // Filter by peronalized Sources
-    if (sourceFilter !== "Source") {
+    // Filter by Sources
+    if (sourceFilter !== "All") {
       items = filterBySource(items, sourceFilter?.toLowerCase());
     }
 
-    if (categoryFilter !== "General") {
+    // Filter by Category
+    if (categoryFilter !== "Default") {
       items = filterByCategory(items, categoryFilter?.toLowerCase());
     }
 
+    // Checks categories from all articles and set them to Categories
     if (articlesCategories) {
-      setCategories(articlesCategories);
+      setCategories([
+        { label: "Default", filterKey: "Default" },
+        ...articlesCategories,
+      ]);
     }
 
+    // Checks sources from all articles and set them to Sources
+    if (apiSources) {
+      setFilterBySourceOptions([
+        { label: "All", filterKey: "All" },
+        ...apiSources,
+      ]);
+    }
     return items;
   }, [filteredNews, searchParams, dateFilter, sourceFilter, categoryFilter]);
 
-  console.log(filteredItems, "filteredItems");
   return (
     <div className="w-full m-auto mb-5">
       <div className="lg:w-3/4 md:w-11/12 m-auto flex flex-col md:flex-row gap-3 justify-end relative mb-6">
@@ -125,16 +102,19 @@ const Articles = ({ searchParams }) => {
           items={sortByDateOptions}
           title={dateFilter}
           handleFilterFunction={handleSortByDate}
+          label={"Date"}
         />
         <ArticlesFilterDropdown
           items={filterBySourceOptions}
           title={sourceFilter}
           handleFilterFunction={handleSortBySource}
+          label={"Source"}
         />
         <ArticlesFilterDropdown
           items={categories}
           title={categoryFilter}
           handleFilterFunction={handleSortByCategory}
+          label={"Category"}
         />
       </div>
 

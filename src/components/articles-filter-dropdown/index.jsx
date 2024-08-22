@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-const ArticlesFilterDropdown = ({ items, title, handleFilterFunction }) => {
+const ArticlesFilterDropdown = ({
+  items,
+  title,
+  handleFilterFunction,
+  label,
+}) => {
   const { loading } = useSelector((state) => state.getNews);
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => {
@@ -10,6 +15,7 @@ const ArticlesFilterDropdown = ({ items, title, handleFilterFunction }) => {
 
   return (
     <div className="relative m-auto md:m-0 w-auto inline-block text-left ">
+      <p className="text-sm text-gray-600 mb-1">{label}</p>
       <button
         id="dropdownDefaultButton"
         onClick={toggleDropdown}
