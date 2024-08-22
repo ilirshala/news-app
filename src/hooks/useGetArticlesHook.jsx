@@ -4,8 +4,15 @@ import { getNews } from "../redux/actions/getNews.action";
 
 export const useGetArticles = () => {
   const dispatch = useDispatch();
-  const { selectedCategory } = useSelector((state) => state.getNews);
+  const { selectedCategory, selectedSource } = useSelector(
+    (state) => state.getNews
+  );
   useEffect(() => {
-    dispatch(getNews(selectedCategory === "all" ? "latest" : selectedCategory));
-  }, [dispatch, selectedCategory]);
+    dispatch(
+      getNews(
+        selectedCategory === "all" ? "latest" : selectedCategory,
+        selectedSource
+      )
+    );
+  }, [dispatch, selectedCategory, selectedSource]);
 };

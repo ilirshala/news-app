@@ -11,9 +11,10 @@ import {
 import { sourceRequests } from "../../constants/newsApiRequests";
 import { formatArticles } from "../../utils/utils";
 
-export const getNews = (query) => {
+export const getNews = (query, selectedSource) => {
   return async (dispatch) => {
     dispatch({ type: GET_NEWS });
+
     try {
       const settings =
         JSON.parse(localStorage.getItem("newsAppSettings")) || {};
@@ -23,16 +24,28 @@ export const getNews = (query) => {
         throw new Error("No sources selected");
       }
 
-      const requests = selectedSources.map((source) =>
-        sourceRequests(query)[source]()
-      );
+      let articles = [];
 
-      const responses = await axios.all(requests);
+      if (selectedSource?.toLowerCase() === "all") {
+        // Call all sources
+        const requests = selectedSources.map((source) =>
+          sourceRequests(query)[source]()
+        );
 
-      const articles = responses.flatMap((response, index) => {
-        const source = selectedSources[index];
-        return formatArticles[source.replace(" ", "")](response.data);
-      });
+        const responses = await axios.all(requests);
+        articles = responses.flatMap((response, index) => {
+          const source = selectedSources[index];
+          return formatArticles[source.replace(" ", "")](response.data);
+        });
+      } else if (selectedSources.includes(selectedSource)) {
+        // Call the specific selected source
+        const response = await sourceRequests(query)[selectedSource]();
+        articles = formatArticles[selectedSource.replace(" ", "")](
+          response.data
+        );
+      } else {
+        throw new Error("Selected source not found in settings");
+      }
 
       dispatch({ type: GET_NEWS_SUCCESS, payload: articles });
     } catch (error) {
