@@ -7,7 +7,7 @@ const ArticlesFilterDropdown = ({ items, title, handleFilterFunction }) => {
   };
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative m-auto md:m-0 w-auto inline-block text-left ">
       <button
         id="dropdownDefaultButton"
         onClick={toggleDropdown}
@@ -35,7 +35,7 @@ const ArticlesFilterDropdown = ({ items, title, handleFilterFunction }) => {
       {isOpen && (
         <div
           id="dropdown"
-          className="absolute w-40 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+          className="max-h-80 overflow-auto absolute w-40 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
         >
           <ul
             className="text-sm text-gray-700 dark:text-gray-200"

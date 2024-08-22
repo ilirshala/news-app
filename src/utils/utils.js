@@ -32,7 +32,7 @@ export const formatArticles = {
       .map((article) => ({
         id: article?.id || uuidv4(),
         title: article.title,
-        category: article.source.name || "NewsAPI",
+        category: article.category || "NewsAPI",
         source: "NewsAPI",
         url: article.url,
         description: article.description,
@@ -45,7 +45,7 @@ export const formatArticles = {
     return response.response.results.map((article) => ({
       id: article?.id || uuidv4(),
       title: article.webTitle,
-      category: article.sectionName,
+      category: article.sectionName || "General",
       source: "Guardian",
       url: article.webUrl,
       description:
@@ -73,5 +73,23 @@ export const formatArticles = {
 export const filterBySource = (items, source) => {
   return items?.filter(
     (item) => item.source.toLowerCase() === source?.toLowerCase()
+  );
+};
+
+export const filterByAuthors = (items, authors) => {
+  return items.filter((article) =>
+    authors?.some((author) => article.author?.includes(author))
+  );
+};
+
+export const filterBySearch = (items, searchParams) => {
+  return items.filter((article) =>
+    article.title?.toLowerCase().includes(searchParams.toLowerCase())
+  );
+};
+
+export const filterByCategory = (items, category) => {
+  return items?.filter((item) =>
+    item.category.toLowerCase().includes(category)
   );
 };
