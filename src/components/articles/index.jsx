@@ -117,7 +117,7 @@ const Articles = ({ searchParams }) => {
 
   return (
     <div className="w-full m-auto mb-5">
-      <div className="lg:w-3/4 md:w-11/12 m-auto flex flex-col md:flex-row gap-3 justify-end relative mb-6">
+      <div className="lg:w-3/4 md:w-11/12 m-auto flex flex-wrap md:flex-nowrap gap-3 justify-end relative mb-6">
         <ArticlesFilterDropdown
           items={sortByDateOptions}
           title={dateFilter}
