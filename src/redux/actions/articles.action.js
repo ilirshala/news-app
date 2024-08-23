@@ -1,15 +1,15 @@
 import {
   FILTER_BY_CATEGORY,
-  GET_NEWS,
-  GET_NEWS_FAILURE,
-  GET_NEWS_SUCCESS,
+  GET_ARTICLES,
+  GET_ARTICLES_FAILURE,
+  GET_ARTICLES_SUCCESS,
 } from "./types";
 import { sourceRequests } from "../../constants/newsApiRequests";
 import { formatArticles } from "../../utils/utils";
 
 export const getAricles = (query, selectedCategory) => {
   return async (dispatch) => {
-    dispatch({ type: GET_NEWS });
+    dispatch({ type: GET_ARTICLES });
 
     try {
       const sources = ["NewsAPI", "Guardian", "NY Times"];
@@ -29,9 +29,9 @@ export const getAricles = (query, selectedCategory) => {
         }
       });
 
-      dispatch({ type: GET_NEWS_SUCCESS, payload: articles });
+      dispatch({ type: GET_ARTICLES_SUCCESS, payload: articles });
     } catch (error) {
-      dispatch({ type: GET_NEWS_FAILURE, payload: error.message });
+      dispatch({ type: GET_ARTICLES_FAILURE, payload: error.message });
     }
   };
 };

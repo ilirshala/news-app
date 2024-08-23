@@ -7,7 +7,7 @@ const ArticlesFilterDropdown = ({
   handleFilterFunction,
   label,
 }) => {
-  const { loading } = useSelector((state) => state.getNews);
+  const { loading } = useSelector((state) => state.getArticles);
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);

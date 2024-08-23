@@ -15,12 +15,12 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const [selectedSources, setSelectedSources] = useState([]);
   const [availableAuthors, setAvailableAuthors] = useState([]);
   const [selectedAuthors, setSelectedAuthors] = useState([]);
-  const { filteredNews, selectedCategory } = useSelector(
-    (state) => state.getNews
+  const { filteredArticles, selectedCategory } = useSelector(
+    (state) => state.getArticles
   );
 
-  const apiSources = extractUniqueSourcesFromApis(filteredNews);
-  const apiCategories = extractUniqueCategoriesFromApis(filteredNews);
+  const apiSources = extractUniqueSourcesFromApis(filteredArticles);
+  const apiCategories = extractUniqueCategoriesFromApis(filteredArticles);
 
   useEffect(() => {
     const loadSettings = () => {
@@ -32,11 +32,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
       }
     };
     loadSettings();
-  }, [filteredNews]);
+  }, [filteredArticles]);
 
   useEffect(() => {
     const updateAvailableAuthors = () => {
-      const filteredBySources = filteredNews.filter((newsItem) =>
+      const filteredBySources = filteredArticles.filter((newsItem) =>
         selectedSources.includes(newsItem.source)
       );
       const authors = filteredBySources
@@ -45,7 +45,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
       setAvailableAuthors([...new Set(authors)]);
     };
     updateAvailableAuthors();
-  }, [filteredNews, selectedSources]);
+  }, [filteredArticles, selectedSources]);
 
   const toggleSelection = (selectedList, setSelectedList, value) => {
     setSelectedList((prev) => {

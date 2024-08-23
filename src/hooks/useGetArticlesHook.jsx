@@ -4,7 +4,7 @@ import { getAricles } from "../redux/actions/articles.action";
 
 export const useGetArticles = () => {
   const dispatch = useDispatch();
-  const { selectedCategory } = useSelector((state) => state.getNews);
+  const { selectedCategory } = useSelector((state) => state.getArticles);
   useEffect(() => {
     dispatch(
       getAricles(

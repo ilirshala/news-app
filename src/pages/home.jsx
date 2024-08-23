@@ -6,13 +6,13 @@ import { useSelector } from "react-redux";
 
 const Home = () => {
   const [searchParams] = useSearchParams();
-  const { filteredNews } = useSelector((state) => state.getNews);
+  const { filteredArticles } = useSelector((state) => state.getArticles);
 
   return (
     <>
       <HomeBanner />
       <Articles
-        filteredNews={filteredNews}
+        filteredArticles={filteredArticles}
         searchParams={searchParams.get("s")}
       />{" "}
     </>

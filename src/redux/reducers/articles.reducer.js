@@ -1,48 +1,44 @@
-import { sortByDate } from "../../utils/utils";
 import {
-  GET_NEWS,
-  GET_NEWS_FAILURE,
-  GET_NEWS_SUCCESS,
+  GET_ARTICLES,
+  GET_ARTICLES_FAILURE,
+  GET_ARTICLES_SUCCESS,
   FILTER_BY_CATEGORY,
 } from "../actions/types";
 
 const initialState = {
   getArticlesSuccess: false,
   loading: false,
-  news: [],
-  filteredNews: [],
+  articles: [],
+  filteredArticles: [],
   error: "",
   selectedCategory: "home",
 };
 
-const getNewsReducer = (state = initialState, action) => {
+const getArticlesReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_NEWS:
+    case GET_ARTICLES:
       return {
         ...state,
         loading: true,
         getArticlesSuccess: false,
       };
-    case GET_NEWS_SUCCESS: {
-      let news = action.payload;
-      if (state.dateType) {
-        news = sortByDate(news, state.dateType.toLowerCase());
-      }
+    case GET_ARTICLES_SUCCESS: {
+      let articles = action.payload;
       return {
         ...state,
         loading: false,
-        news,
-        filteredNews: news,
+        articles,
+        filteredArticles: articles,
         error: "",
         getArticlesSuccess: true,
       };
     }
-    case GET_NEWS_FAILURE:
+    case GET_ARTICLES_FAILURE:
       return {
         ...state,
         loading: false,
-        news: [],
-        filteredNews: [],
+        articles: [],
+        filteredArticles: [],
         error: action.payload,
         getArticlesSuccess: false,
       };
@@ -56,4 +52,4 @@ const getNewsReducer = (state = initialState, action) => {
   }
 };
 
-export default getNewsReducer;
+export default getArticlesReducer;

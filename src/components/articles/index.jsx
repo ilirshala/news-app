@@ -13,8 +13,8 @@ import ArticlesFilterDropdown from "../articles-filter-dropdown";
 import { sortByDateOptions } from "../../constants/constants";
 
 const Articles = ({ searchParams }) => {
-  const { filteredNews, loading, getArticlesSuccess } = useSelector(
-    (state) => state.getNews
+  const { filteredArticles, loading, getArticlesSuccess } = useSelector(
+    (state) => state.getArticles
   );
   const userSettings =
     JSON.parse(localStorage.getItem("newsAppSettings")) || {};
@@ -69,7 +69,7 @@ const Articles = ({ searchParams }) => {
   }, [userSettings?.categories]);
 
   const filteredItems = useMemo(() => {
-    let items = filteredNews;
+    let items = filteredArticles;
 
     if (searchParams) {
       items = filterBySearch(items, searchParams);
@@ -105,7 +105,7 @@ const Articles = ({ searchParams }) => {
 
     return items;
   }, [
-    filteredNews,
+    filteredArticles,
     searchParams,
     userSettings?.authors,
     userSettings?.sources,

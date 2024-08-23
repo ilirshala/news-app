@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 export const useNewsAppSettings = () => {
-  const { filteredNews } = useSelector((state) => state.getNews);
+  const { filteredArticles } = useSelector((state) => state.getArticles);
 
   useEffect(() => {
     const initializeSettings = () => {
-      const sources = filteredNews?.map((article) => article?.source);
-      const categories = filteredNews
+      const sources = filteredArticles?.map((article) => article?.source);
+      const categories = filteredArticles
         ?.map((article) => article?.category)
         .filter(
           (category, index, self) =>
@@ -29,8 +29,8 @@ export const useNewsAppSettings = () => {
 
     const newsAppSettings = localStorage.getItem("newsAppSettings");
 
-    if (!newsAppSettings && filteredNews.length > 0) {
+    if (!newsAppSettings && filteredArticles.length > 0) {
       initializeSettings();
     }
-  }, [filteredNews]);
+  }, [filteredArticles]);
 };

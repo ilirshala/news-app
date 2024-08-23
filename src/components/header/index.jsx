@@ -8,7 +8,7 @@ import { articleCategories } from "../../constants/constants";
 
 const Header = ({ onClickSettings }) => {
   const dispatch = useDispatch();
-  const { selectedCategory } = useSelector((state) => state.getNews);
+  const { selectedCategory } = useSelector((state) => state.getArticles);
   const { isScrolled } = useScrollHook();
 
   const handleCategoryClick = (category) => {
@@ -27,7 +27,7 @@ const Header = ({ onClickSettings }) => {
             isScrolled ? "text-black" : "text-white"
           }`}
         >
-          newsApp
+          News App
         </div>
         <div className="flex items-center space-x-4 my-4">
           <div className="hidden md:block">
