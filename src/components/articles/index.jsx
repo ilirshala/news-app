@@ -3,8 +3,6 @@ import { useSelector } from "react-redux";
 import ArticleCard from "../article-card";
 import SkeletonCard from "../skeleton-card";
 import {
-  extractUniqueCategoriesFromApis,
-  extractUniqueSourcesFromApis,
   filterByAuthors,
   filterByCategory,
   filterBySearch,
@@ -54,8 +52,6 @@ const Articles = ({ searchParams }) => {
     const userSources = settings?.sources;
     const userCategories = settings?.categories;
     let items = filteredNews;
-    const articlesCategories = extractUniqueCategoriesFromApis(items);
-    const apiSources = extractUniqueSourcesFromApis(items);
     // Filter by search
     if (searchParams) {
       items = filterBySearch(items, searchParams);
@@ -78,37 +74,35 @@ const Articles = ({ searchParams }) => {
       items = filterByCategory(items, categoryFilter?.toLowerCase());
     }
 
-    // Checks categories from all articles and set them to Categories
-    if (articlesCategories) {
-      setCategories([
-        { label: "Default", filterKey: "Default" },
-        ...articlesCategories,
-      ]);
-    }
-
-    // Checks sources from all articles and set them to Sources
-    if (apiSources) {
-      setFilterBySourceOptions([
-        { label: "All", filterKey: "All" },
-        ...apiSources,
-      ]);
-    }
-
     if (userSources) {
       const filterByUserSources = items?.filter((article) =>
         userSources.includes(article?.source)
       );
+      const modifiedUserSourcesArray = userSources?.map((source) => ({
+        label: source,
+        filterKey: source,
+      }));
+      setFilterBySourceOptions([
+        { label: "All", filterKey: "All" },
+        ...modifiedUserSourcesArray,
+      ]);
       items = filterByUserSources;
     }
     if (userCategories) {
+      const modifiedUserCategories = userCategories?.map((category) => ({
+        label: category,
+        filterKey: category,
+      }));
+      setCategories([
+        { label: "Default", filterKey: "Default" },
+        ...modifiedUserCategories,
+      ]);
       const filterByUserCategories = items?.filter((article) =>
         userCategories.includes(article?.category)
       );
       console.log(filterByUserCategories, "filterByUserCategories");
       items = filterByUserCategories;
     }
-
-    console.log(userCategories, "userCategories");
     return items;
   }, [filteredNews, searchParams, dateFilter, sourceFilter, categoryFilter]);
 

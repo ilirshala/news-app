@@ -20,7 +20,6 @@ const SettingsModal = ({ isOpen, onClose }) => {
 
   const apiSources = extractUniqueSourcesFromApis(filteredNews);
   const apiCategories = extractUniqueCategoriesFromApis(filteredNews);
-  const articleSources = ["NewsAPI", "NY Times", "Guardian"];
 
   useEffect(() => {
     const newsAppSettings = JSON.parse(localStorage.getItem("newsAppSettings"));
@@ -29,7 +28,8 @@ const SettingsModal = ({ isOpen, onClose }) => {
       setSelectedSources(newsAppSettings?.sources);
       setSelectedAuthors(newsAppSettings?.authors);
     }
-  }, []);
+    console.log(newsAppSettings, "newsAppSettings");
+  }, [filteredNews]);
 
   useEffect(() => {
     const filteredBySources = filteredNews.filter((newsItem) =>
