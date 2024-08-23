@@ -7,17 +7,8 @@ const SearchInput = ({ isScrolled }) => {
   const [searchValue, setSearchValue] = useState("");
   const handleFilterSearch = (e) => {
     setSearchValue(e.target.value);
-    if (e.target.value.length > 0) {
-      setSearchParams({ s: e.target.value });
-    } else {
-      setSearchParams({});
-    }
-  };
-
-  const handleSearchWithEnter = (e) => {
-    if (e.key === "Enter") {
-      handleFilterSearch();
-    }
+    if (e.target.value.length > 0) setSearchParams({ s: e.target.value });
+    else setSearchParams({});
   };
 
   return (
@@ -34,7 +25,6 @@ const SearchInput = ({ isScrolled }) => {
         }`}
         value={searchValue}
         onChange={(e) => handleFilterSearch(e)}
-        onKeyDown={handleSearchWithEnter}
       />
       <FaSearch
         className={`text-2xl cursor-pointer ${
