@@ -14,7 +14,6 @@ export const articleCategories = [
   "Business",
   "Entertaiment",
 ];
-export const articleSources = ["NewsAPI", "NY Times", "Guardian"];
 
 export const sortByDateOptions = [
   {
