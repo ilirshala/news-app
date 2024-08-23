@@ -8,7 +8,7 @@ import {
   filterBySearch,
   filterBySource,
   sortByDate,
-} from "../../utils/utils";
+} from "../../utils";
 import ArticlesFilterDropdown from "./articles-filter-dropdown";
 import { sortByDateOptions } from "../../constants/constants";
 

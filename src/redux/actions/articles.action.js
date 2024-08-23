@@ -5,7 +5,7 @@ import {
   GET_ARTICLES_SUCCESS,
 } from "./types";
 import { sourceRequests } from "../../constants/newsApiRequests";
-import { formatArticles } from "../../utils/utils";
+import { formatArticles } from "../../utils";
 
 export const getAricles = (query, selectedCategory) => {
   return async (dispatch) => {

@@ -4,7 +4,7 @@ import { getAricles } from "../../redux/actions/articles.action";
 import {
   extractUniqueCategoriesFromApis,
   extractUniqueSourcesFromApis,
-} from "../../utils/utils";
+} from "../../utils";
 import SelectPreferences from "./select-preferences";
 import SelectAuthors from "./select-authors";
 import ModalButtons from "./modal-buttons";
