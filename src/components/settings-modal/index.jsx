@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getNews } from "../../redux/actions/articles.action";
+import { getAricles } from "../../redux/actions/articles.action";
 import {
   extractUniqueCategoriesFromApis,
   extractUniqueSourcesFromApis,
@@ -75,7 +75,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     };
     localStorage.setItem("newsAppSettings", JSON.stringify(settings));
     dispatch(
-      getNews(
+      getAricles(
         selectedCategory === "home" ? "latest" : selectedCategory,
         selectedCategory
       )

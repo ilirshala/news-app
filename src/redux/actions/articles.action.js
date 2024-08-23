@@ -7,7 +7,7 @@ import {
 import { sourceRequests } from "../../constants/newsApiRequests";
 import { formatArticles } from "../../utils/utils";
 
-export const getNews = (query, selectedCategory) => {
+export const getAricles = (query, selectedCategory) => {
   return async (dispatch) => {
     dispatch({ type: GET_NEWS });
 
