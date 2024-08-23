@@ -6,7 +6,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  getArticlesSuccess: false,
+  success: false,
   loading: false,
   articles: [],
   error: "",
@@ -19,7 +19,7 @@ const getArticlesReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
-        getArticlesSuccess: false,
+        success: false,
       };
     case GET_ARTICLES_SUCCESS: {
       let articles = action.payload;
@@ -28,7 +28,7 @@ const getArticlesReducer = (state = initialState, action) => {
         loading: false,
         articles,
         error: "",
-        getArticlesSuccess: true,
+        success: true,
       };
     }
     case GET_ARTICLES_FAILURE:
@@ -37,7 +37,7 @@ const getArticlesReducer = (state = initialState, action) => {
         loading: false,
         articles: [],
         error: action.payload,
-        getArticlesSuccess: false,
+        success: false,
       };
     case FILTER_BY_CATEGORY:
       return {

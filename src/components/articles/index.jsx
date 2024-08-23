@@ -13,7 +13,7 @@ import ArticlesFilterDropdown from "./articles-filter-dropdown";
 import { sortByDateOptions } from "../../constants/constants";
 
 const Articles = ({ searchParams }) => {
-  const { articles, loading, getArticlesSuccess } = useSelector(
+  const { articles, loading, success } = useSelector(
     (state) => state.getArticles
   );
   const userSettings =
@@ -29,10 +29,10 @@ const Articles = ({ searchParams }) => {
   }, []);
 
   useEffect(() => {
-    if (getArticlesSuccess) {
+    if (success) {
       resetFilters();
     }
-  }, [getArticlesSuccess, resetFilters]);
+  }, [success, resetFilters]);
 
   const handleSortByDate = useCallback((filterKey) => {
     setDateFilter(filterKey);
