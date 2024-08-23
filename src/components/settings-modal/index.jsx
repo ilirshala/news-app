@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getNews } from "../../redux/actions/getNews.action";
-import { articleCategories } from "../../constants/constants";
 import {
   extractUniqueCategoriesFromApis,
   extractUniqueSourcesFromApis,
 } from "../../utils/utils";
+import SelectPreferences from "./select-preferences";
+import SelectAuthors from "./select-authors";
+import ModalButtons from "./modal-buttons";
 
 const SettingsModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
@@ -100,108 +102,31 @@ const SettingsModal = ({ isOpen, onClose }) => {
           Select Preferences
         </h2>
 
-        <div className="mb-4">
-          <label className="block text-gray-700">Categories:</label>
-          <div className="mt-2 flex flex-wrap">
-            {apiCategories?.map((category, index) => (
-              <button
-                key={index}
-                onClick={() =>
-                  toggleSelection(
-                    selectedCategories,
-                    setSelectedCategories,
-                    category?.filterKey
-                  )
-                }
-                className={`m-1 px-2 py-1 rounded border ${
-                  selectedCategories?.includes(category?.filterKey)
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                {category?.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <SelectPreferences
+          label={"Categories"}
+          items={apiCategories}
+          selectedItems={selectedCategories}
+          setSelectedItems={setSelectedCategories}
+          toggleSelection={toggleSelection}
+        />
 
-        <div className="mb-4">
-          <label className="block text-gray-700">Sources:</label>
-          <div className="mt-2 flex flex-wrap">
-            {apiSources?.map((source, index) => (
-              <button
-                key={index}
-                onClick={() =>
-                  toggleSelection(
-                    selectedSources,
-                    setSelectedSources,
-                    source?.filterKey
-                  )
-                }
-                className={`m-1 px-2 py-1 rounded border ${
-                  selectedSources?.includes(source?.filterKey)
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                {source?.filterKey}
-              </button>
-            ))}
-          </div>
-        </div>
+        <SelectPreferences
+          label={"Sources"}
+          items={apiSources}
+          selectedItems={selectedSources}
+          setSelectedItems={setSelectedSources}
+          toggleSelection={toggleSelection}
+        />
+        <SelectAuthors
+          selectedAuthor={selectedAuthor}
+          setSelectedAuthor={setSelectedAuthor}
+          availableAuthors={availableAuthors}
+          handleAddAuthor={handleAddAuthor}
+          selectedAuthors={selectedAuthors}
+          handleRemoveAuthor={handleRemoveAuthor}
+        />
 
-        <div className="mb-4">
-          <label className="block text-gray-700">Authors:</label>
-          <select
-            value={selectedAuthor}
-            onChange={(e) => setSelectedAuthor(e.target.value)}
-            className="mt-2 p-2 border border-gray-300 rounded w-full"
-          >
-            <option value="">Select an author</option>
-            {availableAuthors?.map((author, index) => (
-              <option key={index} value={author}>
-                {author}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={handleAddAuthor}
-            className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Add Author
-          </button>
-          <div className="mt-2 flex flex-wrap">
-            {selectedAuthors?.map((author, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center bg-gray-200 text-gray-700 px-2 py-1 rounded mr-2 mb-2"
-              >
-                {author}
-                <button
-                  onClick={() => handleRemoveAuthor(author)}
-                  className="ml-2 text-red-500"
-                >
-                  &times;
-                </button>
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex flex-col sm:flex-row justify-end mt-4">
-          <button
-            onClick={handleSave}
-            className="bg-blue-500 text-white px-4 py-2 rounded mb-2 sm:mb-0 sm:mr-2"
-          >
-            Save
-          </button>
-          <button
-            onClick={onClose}
-            className="bg-gray-500 text-white px-4 py-2 rounded"
-          >
-            Cancel
-          </button>
-        </div>
+        <ModalButtons handleSave={handleSave} onClose={onClose} />
       </div>
     </div>
   );

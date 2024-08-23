@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   FILTER_BY_CATEGORY,
   GET_NEWS,
