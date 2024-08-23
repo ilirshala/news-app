@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import ArticleCard from "../article-card";
 import SkeletonCard from "../skeleton-card";
@@ -16,95 +16,104 @@ const Articles = ({ searchParams }) => {
   const { filteredNews, loading, getArticlesSuccess } = useSelector(
     (state) => state.getNews
   );
+  const userSettings =
+    JSON.parse(localStorage.getItem("newsAppSettings")) || {};
   const [dateFilter, setDateFilter] = useState("Date");
   const [sourceFilter, setSourceFilter] = useState("All");
   const [categoryFilter, setCategoryFilter] = useState("Default");
-  const [categories, setCategories] = useState([]);
-  const [filterBySourceOptions, setFilterBySourceOptions] = useState([]);
 
-  const resetFilters = () => {
+  const resetFilters = useCallback(() => {
     setDateFilter("Date");
     setSourceFilter("All");
     setCategoryFilter("Default");
-  };
+  }, []);
 
   useEffect(() => {
     if (getArticlesSuccess) {
       resetFilters();
     }
-  }, [getArticlesSuccess]);
+  }, [getArticlesSuccess, resetFilters]);
 
-  const handleSortByDate = (filterKey) => {
+  const handleSortByDate = useCallback((filterKey) => {
     setDateFilter(filterKey);
-  };
+  }, []);
 
-  const handleSortBySource = (filterKey) => {
+  const handleSortBySource = useCallback((filterKey) => {
     setSourceFilter(filterKey);
-  };
+  }, []);
 
-  const handleSortByCategory = (filterKey) => {
+  const handleSortByCategory = useCallback((filterKey) => {
     setCategoryFilter(filterKey);
-  };
+  }, []);
 
-  const filteredItems = useMemo(() => {
-    const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
-    const authors = settings?.authors;
-    const userSources = settings?.sources;
-    const userCategories = settings?.categories;
-    let items = filteredNews;
-    // Filter by search
-    if (searchParams) {
-      items = filterBySearch(items, searchParams);
-    }
-    // Filter by selected authors
-    if (authors?.length > 0) {
-      items = filterByAuthors(items, authors);
-    }
-    // Sort by date NEWEST / OLDEST
-    if (dateFilter !== "Date") {
-      items = sortByDate(items, dateFilter.toLowerCase());
-    }
-    // Filter by Sources
-    if (sourceFilter !== "All") {
-      items = filterBySource(items, sourceFilter?.toLowerCase());
-    }
-
-    // Filter by Category
-    if (categoryFilter !== "Default") {
-      items = filterByCategory(items, categoryFilter?.toLowerCase());
-    }
-
-    if (userSources) {
-      const filterByUserSources = items?.filter((article) =>
-        userSources.includes(article?.source)
-      );
-      const modifiedUserSourcesArray = userSources?.map((source) => ({
+  const filterBySourceOptions = useMemo(() => {
+    if (userSettings?.sources) {
+      const options = userSettings?.sources.map((source) => ({
         label: source,
         filterKey: source,
       }));
-      setFilterBySourceOptions([
-        { label: "All", filterKey: "All" },
-        ...modifiedUserSourcesArray,
-      ]);
-      items = filterByUserSources;
+      return [{ label: "All", filterKey: "All" }, ...options];
     }
-    if (userCategories) {
-      const modifiedUserCategories = userCategories?.map((category) => ({
+    return [{ label: "All", filterKey: "All" }];
+  }, [userSettings?.sources]);
+
+  const categories = useMemo(() => {
+    if (userSettings?.categories) {
+      const options = userSettings?.categories.map((category) => ({
         label: category,
         filterKey: category,
       }));
-      setCategories([
-        { label: "Default", filterKey: "Default" },
-        ...modifiedUserCategories,
-      ]);
-      const filterByUserCategories = items?.filter((article) =>
-        userCategories.includes(article?.category)
-      );
-      console.log(filterByUserCategories, "filterByUserCategories");
-      items = filterByUserCategories;
+      return [{ label: "Default", filterKey: "Default" }, ...options];
     }
+    return [{ label: "Default", filterKey: "Default" }];
+  }, [userSettings?.categories]);
+
+  const filteredItems = useMemo(() => {
+    let items = filteredNews;
+
+    if (searchParams) {
+      items = filterBySearch(items, searchParams);
+    }
+
+    if (userSettings?.authors?.length > 0) {
+      items = filterByAuthors(items, userSettings?.authors);
+    }
+
+    if (dateFilter !== "Date") {
+      items = sortByDate(items, dateFilter.toLowerCase());
+    }
+
+    if (sourceFilter !== "All") {
+      items = filterBySource(items, sourceFilter.toLowerCase());
+    }
+
+    if (categoryFilter !== "Default") {
+      items = filterByCategory(items, categoryFilter.toLowerCase());
+    }
+
+    if (userSettings?.sources) {
+      items = items.filter((article) =>
+        userSettings?.sources.includes(article.source)
+      );
+    }
+
+    if (userSettings?.categories) {
+      items = items.filter((article) =>
+        userSettings?.categories.includes(article.category)
+      );
+    }
+
     return items;
-  }, [filteredNews, searchParams, dateFilter, sourceFilter, categoryFilter]);
+  }, [
+    filteredNews,
+    searchParams,
+    userSettings?.authors,
+    userSettings?.sources,
+    userSettings?.categories,
+    dateFilter,
+    sourceFilter,
+    categoryFilter,
+  ]);
 
   return (
     <div className="w-full m-auto mb-5">
@@ -134,7 +143,7 @@ const Articles = ({ searchParams }) => {
           Array.from({ length: 4 }).map((_, index) => (
             <SkeletonCard key={index} />
           ))
-        ) : filteredItems?.length > 0 ? (
+        ) : filteredItems.length > 0 ? (
           filteredItems.map((article) => (
             <ArticleCard article={article} key={article.id} />
           ))
