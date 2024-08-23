@@ -6,7 +6,7 @@ import {
   NEWS_API_KEY,
   GUARDIAN_API_KEY,
   NYTIMES_API_KEY,
-} from "./constants";
+} from ".";
 
 export const sourceRequests = (query, category) => ({
   NewsAPI: () =>

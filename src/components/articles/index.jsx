@@ -10,7 +10,7 @@ import {
   sortByDate,
 } from "../../utils";
 import ArticlesFilterDropdown from "./articles-filter-dropdown";
-import { sortByDateOptions } from "../../constants/constants";
+import { sortByDateOptions } from "../../constants";
 
 const Articles = ({ searchParams }) => {
   const { articles, loading, success } = useSelector(

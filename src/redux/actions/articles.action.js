@@ -4,7 +4,7 @@ import {
   GET_ARTICLES_FAILURE,
   GET_ARTICLES_SUCCESS,
 } from "./types";
-import { sourceRequests } from "../../constants/newsApiRequests";
+import { sourceRequests } from "../../constants/apiRequests";
 import { formatArticles } from "../../utils";
 
 export const getAricles = (query, selectedCategory) => {
