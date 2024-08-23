@@ -25,14 +25,14 @@ const SettingsModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     const loadSettings = () => {
       const settings = JSON.parse(localStorage.getItem("newsAppSettings"));
-      if (settings) {
+      if (settings && isOpen) {
         setSelectedCategories(settings.categories || []);
         setSelectedSources(settings.sources || []);
         setSelectedAuthors(settings.authors || []);
       }
     };
     loadSettings();
-  }, [filteredArticles]);
+  }, [isOpen]);
 
   useEffect(() => {
     const updateAvailableAuthors = () => {
