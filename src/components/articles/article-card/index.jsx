@@ -1,6 +1,6 @@
 import React from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
-import { formatTimestamp } from "../../utils/utils";
+import { formatTimestamp } from "../../../utils/utils";
 
 const ArticleCard = ({ article }) => {
   const articleDate = article?.publishedAt;

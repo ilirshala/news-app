@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
-import ArticleCard from "../article-card";
+import ArticleCard from "./article-card";
 import SkeletonCard from "../skeleton-card";
 import {
   filterByAuthors,
@@ -9,7 +9,7 @@ import {
   filterBySource,
   sortByDate,
 } from "../../utils/utils";
-import ArticlesFilterDropdown from "../articles-filter-dropdown";
+import ArticlesFilterDropdown from "./articles-filter-dropdown";
 import { sortByDateOptions } from "../../constants/constants";
 
 const Articles = ({ searchParams }) => {
