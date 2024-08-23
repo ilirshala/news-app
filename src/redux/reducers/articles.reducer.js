@@ -9,7 +9,6 @@ const initialState = {
   getArticlesSuccess: false,
   loading: false,
   articles: [],
-  filteredArticles: [],
   error: "",
   selectedCategory: "home",
 };
@@ -28,7 +27,6 @@ const getArticlesReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         articles,
-        filteredArticles: articles,
         error: "",
         getArticlesSuccess: true,
       };
@@ -38,7 +36,6 @@ const getArticlesReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         articles: [],
-        filteredArticles: [],
         error: action.payload,
         getArticlesSuccess: false,
       };

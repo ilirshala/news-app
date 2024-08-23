@@ -2,12 +2,13 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 export const useNewsAppSettings = () => {
-  const { filteredArticles } = useSelector((state) => state.getArticles);
+  const { articles } = useSelector((state) => state.getArticles);
 
+  // This useeffect will be runned when we got all articles and we dont have any user settings setted up
   useEffect(() => {
     const initializeSettings = () => {
-      const sources = filteredArticles?.map((article) => article?.source);
-      const categories = filteredArticles
+      const sources = articles?.map((article) => article?.source);
+      const categories = articles
         ?.map((article) => article?.category)
         .filter(
           (category, index, self) =>
@@ -16,7 +17,6 @@ export const useNewsAppSettings = () => {
       const uniqueSources = sources.filter(
         (source, index, self) => index === self.findIndex((s) => s === source)
       );
-      console.log(sources, "sources");
 
       const defaultSettings = {
         categories: categories,
@@ -29,8 +29,8 @@ export const useNewsAppSettings = () => {
 
     const newsAppSettings = localStorage.getItem("newsAppSettings");
 
-    if (!newsAppSettings && filteredArticles.length > 0) {
+    if (!newsAppSettings && articles.length > 0) {
       initializeSettings();
     }
-  }, [filteredArticles]);
+  }, [articles]);
 };

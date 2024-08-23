@@ -13,7 +13,7 @@ import ArticlesFilterDropdown from "./articles-filter-dropdown";
 import { sortByDateOptions } from "../../constants/constants";
 
 const Articles = ({ searchParams }) => {
-  const { filteredArticles, loading, getArticlesSuccess } = useSelector(
+  const { articles, loading, getArticlesSuccess } = useSelector(
     (state) => state.getArticles
   );
   const userSettings =
@@ -69,7 +69,7 @@ const Articles = ({ searchParams }) => {
   }, [userSettings?.categories]);
 
   const filteredItems = useMemo(() => {
-    let items = filteredArticles;
+    let items = articles;
 
     if (searchParams) {
       items = filterBySearch(items, searchParams);
@@ -105,7 +105,7 @@ const Articles = ({ searchParams }) => {
 
     return items;
   }, [
-    filteredArticles,
+    articles,
     searchParams,
     userSettings?.authors,
     userSettings?.sources,
