@@ -13,24 +13,21 @@ export const getNews = (query, selectedCategory) => {
     dispatch({ type: GET_NEWS });
 
     try {
-      const settings =
-        JSON.parse(localStorage.getItem("newsAppSettings")) || {};
-      const selectedSources = settings.sources || [];
-
-      if (selectedSources.length === 0) {
-        throw new Error("No sources selected");
-      }
-
-      let articles = [];
-
-      const requests = selectedSources.map((source) =>
+      const sources = ["NewsAPI", "Guardian", "NY Times"];
+      const requests = sources.map((source) =>
         sourceRequests(query, selectedCategory)[source]()
       );
 
-      const responses = await axios.all(requests);
-      articles = responses.flatMap((response, index) => {
-        const source = selectedSources[index];
-        return formatArticles[source.replace(" ", "")](response.data);
+      const results = await Promise.allSettled(requests);
+
+      const articles = results.flatMap((result, index) => {
+        if (result.status === "fulfilled") {
+          const source = sources[index];
+          return formatArticles[source.replace(" ", "")](result.value.data);
+        } else {
+          console.error(`${sources[index]} failed:`, result.reason.message);
+          return [];
+        }
       });
 
       dispatch({ type: GET_NEWS_SUCCESS, payload: articles });

@@ -1,20 +1,33 @@
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export const useNewsAppSettings = () => {
+  const { filteredNews } = useSelector((state) => state.getNews);
+
   useEffect(() => {
-    const newsAppSettings = localStorage.getItem("newsAppSettings");
-    const userSettings = {
-      categories: [
-        "Technology",
-        "Sports",
-        "Health",
-        "Business",
-        "Entertaiment",
-      ],
-      sources: ["NewsAPI", "NY Times", "Guardian"],
-      authors: [],
+    const initializeSettings = () => {
+      const sources = filteredNews?.map((article) => article?.source);
+      console.log(sources, "sources");
+
+      const defaultSettings = {
+        categories: [
+          "Technology",
+          "Sports",
+          "Health",
+          "Business",
+          "Entertainment",
+        ],
+        sources: sources,
+        authors: [],
+      };
+
+      localStorage.setItem("newsAppSettings", JSON.stringify(defaultSettings));
     };
-    if (!newsAppSettings)
-      localStorage.setItem("newsAppSettings", JSON.stringify(userSettings));
-  }, []);
+
+    const newsAppSettings = localStorage.getItem("newsAppSettings");
+
+    if (!newsAppSettings && filteredNews.length > 0) {
+      initializeSettings();
+    }
+  }, [filteredNews]);
 };
