@@ -1,7 +1,7 @@
 import React from "react";
 import { FiSettings } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { filterByCategory } from "../../redux/actions/getNews.action";
+import { filterByCategory } from "../../redux/actions/articles.action";
 import { useScrollHook } from "../../hooks/useScrollHook";
 import SearchInput from "../search-input";
 import { articleCategories } from "../../constants/constants";

@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import { thunk } from "redux-thunk";
 import { createStore, applyMiddleware } from "redux";
-import getNewsReducer from "./reducers/getNews.reducer";
+import getNewsReducer from "./reducers/articles.reducer";
 
 export const rootReducer = combineReducers({
   getNews: getNewsReducer,
