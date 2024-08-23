@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getNews } from "../../redux/actions/getNews.action";
 import { articleCategories } from "../../constants/constants";
+import {
+  extractUniqueCategoriesFromApis,
+  extractUniqueSourcesFromApis,
+} from "../../utils/utils";
 
 const SettingsModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
@@ -13,6 +17,9 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const { filteredNews, selectedCategory } = useSelector(
     (state) => state.getNews
   );
+
+  const apiSources = extractUniqueSourcesFromApis(filteredNews);
+  const apiCategories = extractUniqueCategoriesFromApis(filteredNews);
   const articleSources = ["NewsAPI", "NY Times", "Guardian"];
 
   useEffect(() => {
@@ -96,23 +103,23 @@ const SettingsModal = ({ isOpen, onClose }) => {
         <div className="mb-4">
           <label className="block text-gray-700">Categories:</label>
           <div className="mt-2 flex flex-wrap">
-            {articleCategories?.map((category, index) => (
+            {apiCategories?.map((category, index) => (
               <button
                 key={index}
                 onClick={() =>
                   toggleSelection(
                     selectedCategories,
                     setSelectedCategories,
-                    category
+                    category?.filterKey
                   )
                 }
                 className={`m-1 px-2 py-1 rounded border ${
-                  selectedCategories?.includes(category)
+                  selectedCategories?.includes(category?.filterKey)
                     ? "bg-blue-500 text-white"
                     : "bg-gray-200 text-gray-700"
                 }`}
               >
-                {category}
+                {category?.label}
               </button>
             ))}
           </div>
@@ -121,19 +128,23 @@ const SettingsModal = ({ isOpen, onClose }) => {
         <div className="mb-4">
           <label className="block text-gray-700">Sources:</label>
           <div className="mt-2 flex flex-wrap">
-            {articleSources?.map((source, index) => (
+            {apiSources?.map((source, index) => (
               <button
                 key={index}
                 onClick={() =>
-                  toggleSelection(selectedSources, setSelectedSources, source)
+                  toggleSelection(
+                    selectedSources,
+                    setSelectedSources,
+                    source?.filterKey
+                  )
                 }
                 className={`m-1 px-2 py-1 rounded border ${
-                  selectedSources?.includes(source)
+                  selectedSources?.includes(source?.filterKey)
                     ? "bg-blue-500 text-white"
                     : "bg-gray-200 text-gray-700"
                 }`}
               >
-                {source}
+                {source?.filterKey}
               </button>
             ))}
           </div>

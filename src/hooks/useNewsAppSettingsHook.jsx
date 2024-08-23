@@ -7,17 +7,20 @@ export const useNewsAppSettings = () => {
   useEffect(() => {
     const initializeSettings = () => {
       const sources = filteredNews?.map((article) => article?.source);
+      const categories = filteredNews
+        ?.map((article) => article?.category)
+        .filter(
+          (category, index, self) =>
+            index === self.findIndex((c) => c === category)
+        );
+      const uniqueSources = sources.filter(
+        (source, index, self) => index === self.findIndex((s) => s === source)
+      );
       console.log(sources, "sources");
 
       const defaultSettings = {
-        categories: [
-          "Technology",
-          "Sports",
-          "Health",
-          "Business",
-          "Entertainment",
-        ],
-        sources: sources,
+        categories: categories,
+        sources: uniqueSources,
         authors: [],
       };
 

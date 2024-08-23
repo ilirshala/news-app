@@ -51,10 +51,11 @@ const Articles = ({ searchParams }) => {
   const filteredItems = useMemo(() => {
     const settings = JSON.parse(localStorage.getItem("newsAppSettings")) || {};
     const authors = settings?.authors;
+    const userSources = settings?.sources;
+    const userCategories = settings?.categories;
     let items = filteredNews;
     const articlesCategories = extractUniqueCategoriesFromApis(items);
     const apiSources = extractUniqueSourcesFromApis(items);
-
     // Filter by search
     if (searchParams) {
       items = filterBySearch(items, searchParams);
@@ -92,6 +93,22 @@ const Articles = ({ searchParams }) => {
         ...apiSources,
       ]);
     }
+
+    if (userSources) {
+      const filterByUserSources = items?.filter((article) =>
+        userSources.includes(article?.source)
+      );
+      items = filterByUserSources;
+    }
+    if (userCategories) {
+      const filterByUserCategories = items?.filter((article) =>
+        userCategories.includes(article?.category)
+      );
+      console.log(filterByUserCategories, "filterByUserCategories");
+      items = filterByUserCategories;
+    }
+
+    console.log(userCategories, "userCategories");
     return items;
   }, [filteredNews, searchParams, dateFilter, sourceFilter, categoryFilter]);
 

@@ -7,6 +7,7 @@ export const GUARDIAN_API_KEY = process.env.REACT_APP_GUARDIAN_API_KEY;
 export const NYTIMES_API_KEY = process.env.REACT_APP_NYTIMES_API_KEY;
 
 export const articleCategories = [
+  "Home",
   "Technology",
   "Sports",
   "Health",
