@@ -1,8 +1,6 @@
 import React from "react";
 
 const SelectAuthors = ({
-  selectedAuthor,
-  setSelectedAuthor,
   availableAuthors,
   handleAddAuthor,
   selectedAuthors,
@@ -12,8 +10,7 @@ const SelectAuthors = ({
     <div className="mb-4">
       <label className="block text-gray-700">Authors:</label>
       <select
-        value={selectedAuthor}
-        onChange={(e) => setSelectedAuthor(e.target.value)}
+        onChange={(e) => handleAddAuthor(e.target.value)}
         className="mt-2 p-2 border border-gray-300 rounded w-full"
       >
         <option value="">Select an author</option>
@@ -23,12 +20,6 @@ const SelectAuthors = ({
           </option>
         ))}
       </select>
-      <button
-        onClick={handleAddAuthor}
-        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
-      >
-        Add Author
-      </button>
       <div className="mt-2 flex flex-wrap">
         {selectedAuthors?.map((author, index) => (
           <span

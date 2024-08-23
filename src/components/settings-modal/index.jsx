@@ -15,7 +15,6 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const [selectedSources, setSelectedSources] = useState([]);
   const [availableAuthors, setAvailableAuthors] = useState([]);
   const [selectedAuthors, setSelectedAuthors] = useState([]);
-  const [selectedAuthor, setSelectedAuthor] = useState("");
   const { filteredNews, selectedCategory } = useSelector(
     (state) => state.getNews
   );
@@ -24,24 +23,28 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const apiCategories = extractUniqueCategoriesFromApis(filteredNews);
 
   useEffect(() => {
-    const newsAppSettings = JSON.parse(localStorage.getItem("newsAppSettings"));
-    if (newsAppSettings) {
-      setSelectedCategories(newsAppSettings?.categories);
-      setSelectedSources(newsAppSettings?.sources);
-      setSelectedAuthors(newsAppSettings?.authors);
-    }
-    console.log(newsAppSettings, "newsAppSettings");
+    const loadSettings = () => {
+      const settings = JSON.parse(localStorage.getItem("newsAppSettings"));
+      if (settings) {
+        setSelectedCategories(settings.categories || []);
+        setSelectedSources(settings.sources || []);
+        setSelectedAuthors(settings.authors || []);
+      }
+    };
+    loadSettings();
   }, [filteredNews]);
 
   useEffect(() => {
-    const filteredBySources = filteredNews.filter((newsItem) =>
-      selectedSources.includes(newsItem.source)
-    );
-
-    const authors = filteredBySources
-      .map((newsItem) => newsItem?.author)
-      .filter((author) => author !== "Unknown");
-    setAvailableAuthors([...new Set(authors)]);
+    const updateAvailableAuthors = () => {
+      const filteredBySources = filteredNews.filter((newsItem) =>
+        selectedSources.includes(newsItem.source)
+      );
+      const authors = filteredBySources
+        .map((newsItem) => newsItem.author)
+        .filter((author) => author && author !== "Unknown");
+      setAvailableAuthors([...new Set(authors)]);
+    };
+    updateAvailableAuthors();
   }, [filteredNews, selectedSources]);
 
   const toggleSelection = (selectedList, setSelectedList, value) => {
@@ -54,11 +57,8 @@ const SettingsModal = ({ isOpen, onClose }) => {
     });
   };
 
-  const handleAddAuthor = () => {
-    if (selectedAuthor && !selectedAuthors.includes(selectedAuthor)) {
-      setSelectedAuthors([...selectedAuthors, selectedAuthor]);
-      setSelectedAuthor("");
-    }
+  const handleAddAuthor = (e) => {
+    setSelectedAuthors([...selectedAuthors, e]);
   };
 
   const handleRemoveAuthor = (authorToRemove) => {
@@ -118,8 +118,6 @@ const SettingsModal = ({ isOpen, onClose }) => {
           toggleSelection={toggleSelection}
         />
         <SelectAuthors
-          selectedAuthor={selectedAuthor}
-          setSelectedAuthor={setSelectedAuthor}
           availableAuthors={availableAuthors}
           handleAddAuthor={handleAddAuthor}
           selectedAuthors={selectedAuthors}
