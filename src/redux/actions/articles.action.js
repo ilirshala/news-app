@@ -7,7 +7,7 @@ import {
 import { sourceRequests } from "../../constants/apiRequests";
 import { formatArticles } from "../../utils";
 
-export const getAricles = (query, selectedCategory) => {
+export const getArticles = (query, selectedCategory) => {
   return async (dispatch) => {
     dispatch({ type: GET_ARTICLES });
 
